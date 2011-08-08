@@ -1,0 +1,174 @@
+Triggers:
+
+	name:
+	type:
+	method-trigger:
+	probability:
+	lifespan:
+	owner:
+	access:
+	options:
+	created:
+	last-changed:
+	last-accessed:
+	hits:	
+	action-mode:
+	action:
+
+Commands
+	trig-set-name lyrics lyrics1
+
+	select-trigger
+	select-trigger lyrics
+	set-name lyrics1
+
+	select-trigger
+
+
+	NAME
+		Name of trigger.  Must be unique, and cannot contain spaces.
+
+	TYPE
+		Used to specify pre-built triggers.  Pre-built triggers are
+		those that have been setup to suit a specific purpose, for
+		example, a lyrics trigger.  A pre-built trigger has
+		fields which are pre-defined, and can have fields which are
+		uneditable too.  Uneditable fields are marked with an asterisk.
+		Users may be given permission to create triggers of certain
+		types, all types, or general types.
+
+	METHOD-TRIGGER
+		As of now, this consists of the following types (methods) of
+		triggers:
+
+			cron-trigger
+			pub-trigger
+			priv-trigger
+			action-trigger
+			state-trigger	
+
+		- A cron-trigger uses a cron-based setting as its argument.
+		  Cron-based settings are in the form: min hr day dow month.
+		- A pub-trigger matches public text said on a channel.
+		- A priv-trigger matches public text said on a channel which
+		  includes any of the bot's nicks.
+		- An action-trigger matches specific actions that can occur,
+		  such as a user getting ops, the bot joining a channel, a
+		  user getting kicked, etc.  Actions are defined elsewhere.
+		- A state-trigger matches a state the bot may be in, such
+		  as being without ops, being alone on channel, etc.  States
+		  are defined elsewhere.  States must use the state-rate
+		  field to specify how often the action is to occur since the
+		  state can exist for an indefinite time.
+
+		When multiple different triggers are used they all match on
+		an OR basis except for the state-trigger, which matches on
+		an AND basis with everything else.  When multiple similar
+		triggers are used they match on an AND basis.  An example
+		should make this clearer.
+
+			cron-trigger 5,10,15 * * * *
+			pub-trigger "i am so"
+			pub-trigger  "bored", "tired", "lazy"
+			state-trigger MEOPPED
+			state-trigger !ONCHAN arkham
+
+		will match as follows:  every 5th, 10th, 15th minute OR when someone
+		says "I am so" combined with "bored", "tired", or "lazy", and
+		I (the bot) have ops, and Arkham is not on the channel, do this.
+
+	PROBABILITY
+		If this trigger is matched, the probability that it will be
+		executed.  For example, setting pub-trigger to "i'm bored"
+		and probability to .5 will execute the trigger 50% of the time
+		when someone says "i'm bored".
+
+	LIFESPAN
+		If set, defines how long the trigger will be in effect.  Can
+		be specified as time from now (i.e. 2w, 3d) or an absolute
+		date.  When lifespan is achieved, trigger is deleted.
+
+	OWNER
+		Automatically set at creation time.  Can be reset by master.
+
+	ACCESS
+		Specifies who is allowed to modify this trigger.  Access flags
+		can be nicks, *, or any combination of user flags.  Usually set
+		in a custom-build type.  Parameters are specified as:
+
+			ACCESS: <level> <method>, <level> <method>, ...
+
+		where level is any combination of user levels, and method is
+		any combination of the following flags: ead
+
+			e = users can edit any field, but not add
+			a = users can add addition fields
+			d = users can delete this trigger
+			l = user's actions are logged to this trigger log
+
+		Logs can be kept for each trigger by using the l flag so that
+		owners can see who has tinkered with their trigger.  Only the
+		n most recent modifications are stored, where n is defined in
+		the config file.
+
+	OPTIONS
+		Specifies trigger options.  Options are of the following type:
+
+			notewhenchanged, keeplog, mostrecentlogmods <n>
+
+
+	CREATED, LAST-CHANGED, LAST-HIT, HITS
+		Reflect time trigger was created, last changed, last hit, and
+		the number of hits in its lifetime.
+
+	ACTION-MODE
+		The ACTION-MODE field dictates how multiple actions are
+		executed.  The following types of execution are supported
+
+			sequential
+			random
+			random no repeat
+
+		Sequential execution causes the trigger to execute the action
+		lines like a script, each line is executed consecutively.
+
+		Random and random no repeat execution causes the trigger to
+		execute a randomly chosen action line.  With 'no repeat',
+		action lines won't be repeated until all have been executed.
+
+
+	ACTION
+		What is executed when this trigger is matched.  When multiple
+		actions are used, the selection of actions is dictated by
+		the ACTION-MODE field.
+
+		Actions can be as follows:
+
+			SAY <message>
+			ME <message>
+			KICK <user> <message>
+			OP <user>
+			MSG <user> <message>
+
+	Variable substitution
+		A powerful technique for triggers is the idea of variable
+		substitution.  Instead of specifying an exact word, we can
+		specify a variable instead, which will match against any word
+		nick, channel, etc.  This allows us to use these variables in
+		an action line.  An example should make this clearer.
+
+			priv-trigger: "sing a song for $nick"
+			action: ME sings a song for $nick.
+
+		With this, when someone says
+
+			<user> Grufti, sing a song for Arkham
+
+		Grufti will respond with
+
+			* Grufti sings a song for Arkham.
+
+		Variables exist in sub-types, so if the variable $nick was
+		used in this fashion for a custom type, and someone inherited
+		from it, they'd have access to $nick in their action fields
+		automatically.

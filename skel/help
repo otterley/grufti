@@ -1,0 +1,2334 @@
+#################################################################
+# Grufti helpfile
+#################################################################
+
+%subject Standard
+-----------------------------------------------------------------
+Welcome to \n!  A BBS-like service-oriented bot for IRC
+
+  Help can be found on the following topics:
+    intro      - For those new to \n, things to remember
+    account    - How to configure and use your \n account
+    notes      - How to send, read, delete, and manage Notes
+    channel    - How to manipulate and control channel members
+    levels     - All about levels and what you can do with them
+    userinfo   - How to find information about \n people
+    cool       - Neat extra features like 'stat' and 'webcatch'
+    masters    - What masters can do and how it's done
+    response   - How to configure responses
+    events     - Upcoming events and how you can sign up
+
+Visit my web page: \w
+Telnet access: \h \t
+-----------------------------------------------------------------
+%end
+#################################################################
+%subject commands
+
+  A list of relevant commands can be found under the following
+  topics.  Type 'help <topic>'...
+    intro      - For those new to \n, things to remember
+    account    - How to configure and use your \n account
+    notes      - How to send, read, delete, and manage Notes
+    channel    - How to manipulate and control channel members
+    levels     - All about levels and what you can do with them
+    userinfo   - How to find info about other \n people
+    cool       - Neat extra features like 'stat' and 'webcatch'
+    response   - How to configure responses
+    masters    - What masters can do and how it's done
+    events     - Upcoming events and how you can sign up
+
+  Type 'cmdinfo' to see a list of ALL commands.
+
+%end
+#################################################################
+%subject account
+
+  Your \n account is a lot like a BBS account. With it you
+  can send and receive Notes, and set information about yourself.
+
+  To create an account, use the 'register' command.  To view info
+  which has been set by other users, use the 'finger' command.
+
+  Finally, you can personalize your own account with the
+  following commands:
+
+      setfinger, setemail, setwww, setother, setplan, setbday,
+      setlocation, addnick, delnick, setpass, addgreet, delgreet
+
+  For more help on any command specify -h after the command or
+  type 'help <command>'.
+
+%end
+#################################################################
+%subject setinfo
+
+  Your \n account is a lot like a BBS account. With it you
+  can send and receive Notes, and set information about yourself.
+
+  To create an account, use the 'register' command.  To view info
+  which has been set by other users, use the 'finger' command.
+
+  Finally, you can personalize your own account with the
+  following commands:
+
+      setfinger, setemail, setwww, setother, setplan, setbday,
+      setlocation, addnick, delnick, setpass, addgreet, delgreet
+
+  For more help on any command specify -h after the command or
+  type 'help <command>'.
+
+%end
+#################################################################
+%subject notes
+
+  Like a BBS account, you can send and receive 'Notes' from other
+  IRC users.  If a user has a \n account, a Note can be
+  sent by typing 'note <nick> <message...>'.
+
+  Your Notes are stored in a folder which looks like
+
+   #    Sent  From      Real Name              Subject
+  -- -- ----- --------- ---------------------- ------------------
+   1 *  07/09 Kyri      Cindy Rider            Hey bro, what's ..
+   2  N 07/11 BillGates 'resistance is futile' I want to discu...
+  -- -- ----- --------- ---------------------- ------------------
+
+  The following commands are used to send and read Notes
+
+      note, addnote, rn, dn, nn, savenote, unsavenote, showmynote
+      memo, setforward, forwardnotes
+
+  For more help on any command specify -h after the command or
+  type 'help <command>'.
+
+%end
+#################################################################
+%subject channel
+
+  Use the 'who' command to display who is on a specific channel
+  and other information like the topic.  Type 'who -s <channel>'
+  to see channel statistics.
+
+  If you have the appropriate levels, you may be eligible to use
+  the following commands:
+
+      leave, join, kick, ban, kickban, deop, op, invite
+
+  For more help on any command specify -h after the command or
+  type 'help <command>'.
+
+%end
+#################################################################
+%subject userinfo
+
+  Use the 'finger' command to display information set by
+  \n users.  If no arguments are specified, all \n
+  users who are online or are displayed in short format.
+
+  Use the 'whois' command to display a list of hostmasks the user
+  has been seen using, or with which they have registered.
+
+  A 'finger' listing shows any information a user has set for
+  him or herself, and which nicks they are known by on IRC.  The
+  following symbols may appear next to a nick
+
+    '+' - The user (using one of their registered hostmasks) is
+          on IRC with this nick
+    '&' - The user is connected via telnet with this nick
+    '*' - The user is connected via DCC with this nick
+
+  To see statistical information about a \n user, use the
+  command 'stat'.  Type 'help account' for setup information.
+
+%end
+#################################################################
+%subject masters
+
+  Bot masters have a special role in dealing with bot upkeep and
+  maintennance.  They must monitor logfiles, distribute levels,
+  help IRC folks when they're having trouble with the bot, and
+  know what to do when things like critical bot files become
+  corrupt or the bot is unexpectedly going off the network.
+
+  Here are the commands a master will need to know how to use.
+      watchlog   - Monitor all log types
+      mode       - Add and remove levels
+      adduser    - Create a new user account (also: deluser)
+      addevent   - Add an event to the Event list (also: delevent)
+      chpass     - Change the password for any user
+      leave      - Make the bot leave a channel
+      join       - Make the bot rejoin a channel
+      jump       - Reconnect to another server
+      servinfo   - Display servers and disconnect reasons
+      cmdinfo    - Display all commands and required levels
+      boot       - Boot a user off DCC
+      setvar     - Set an internal variable
+      configinfo - Display the values of all internal variables
+      reset-motd - Reset when the motd was modified
+
+%end
+#################################################################
+%subject levels
+
+  \n users may have the following levels
+
+    r  "reg'd"    - User is registered and has an account.
+    b  "bot"      - User is a bot.
+    o  "ops"      - User can get ops on the channel.
+    v  "voice"    - User can speak on moderated channels (+o implies +v)
+    g  "greets"   - User is greeted when joining the channel.
+    f  "friend"   - User is unbanned if banned.
+    p  "protect"  - User is protected from being banned.
+    l  "response" - User can add and delete lyrics responses.
+    L  "response" - User can add and delete responses of any type.
+    3  "31337"    - User is wizard and has special bot control.
+    t  "trusted"  - User has many priveleges but is not a master.
+    m  "master"   - User is master and has full bot control.
+    n  "notices"  - User receives notices on bot activity.
+    w  "owner"    - User is bot owner and cannot be deleted.
+
+  To see which levels are required by certain commands, type
+  'cmdinfo <level>'.
+
+%end
+#################################################################
+%subject greets
+
+  You can create your own greetings with which \n will
+  greet you when you join the the channel.  If multiple greet
+  lines are set, a greeting is chosen at random.
+
+  Use the following commands to setup your greets:
+
+    addgreet      Create a new greeting
+    delgreet      Delete an existing greeting
+    showgreets    Display greetings (use '-t' to display greets
+                  in translated form)
+
+  For more information on each command, specify '-h' after the
+  command or type 'help <command>'.
+
+%end
+#################################################################
+%subject cool
+
+  \n is a unique and interesting bot.  The following
+  commands are a just few of the reasons which make him so cool.
+    webcatch       - Displays the most recent web catches.
+    notify         - All \n users who are online or via DCC
+    dccinfo        - All DCC connections
+    cmdinfo        - Every command available and required levels
+    whoisin        - Who lives in a particular region
+    searchresponse - What \n has been programmed to say.
+    setother       - The ability to set your own information slot
+    showlocations  - List locations where \n users live
+    users          - Displays all registered users on the bot
+    stat <nick>    - Displays statistical info on \n users
+    forward        - Forward your Notes to an email account
+    showevents     - Display upcoming events and who'll be there
+    showbdays      - Who's having a birthday for a given month
+
+  Some frills don't have commands, like the ability to keep track
+  of users across IRC and multiple nicks, a more robust response
+  matching and organization, being able to configure responses on
+  the fly, more secure authentication, and storing Notes.
+
+%end
+#################################################################
+%subject intro
+
+  Welcome to \n!
+
+  Grufti is a BBS-like bot, written entirely in C from scratch.
+  It was started in May of 1997 and was put here on earth to
+  provide entertainment, useful features such as Notes and finger
+  info, and done so completely in my spare time.
+
+  If you have not yet registered with the bot, do so now!  Type
+  'register' to begin.
+
+  Here are some things you will want to keep in mind
+   - DCC chat the bot for more efficient interaction,
+   - If the bot seems to be ignoring your DCC chat requests, you
+     may be behind a firewall.  Try the 'chat' command.
+   - When a command is listed like 'commandname', the tick marks
+     are provided for clarity, not as part of the command!
+   - When '<>' surrounds a command parameter, it means the
+     parameter is required. '[]' means the parameter is optional.
+   - You can interact with the bot without even being on IRC via
+     a telnet port, or via the web.
+   - The term 'account' refers to your *\n* account.  When
+     referring to email addresses we'll use the term 'hostmask'.
+   - Every command supports the '-h' switch which brings up help
+     for that command.  View all commands with 'cmdinfo'.
+
+%end
+#################################################################
+%subject response
+
+  Keep the following in mind:  The term 'response' refers to a 
+  collection of 'response lines'.
+
+  The following commands are used to program responses:
+      newresponse, delresponse, addrespline, delrespline,
+      addrespmatch, delrespmatch, newrespmatch, addrespexcept,
+      delrespexcept, newrespexcept, showresponse, searchresponse
+
+  When creating a response, the order of events is usually
+      newresponse <type> <name>
+      addrespmatch <name> <matchline>
+      addrespline <name> <respline>
+      addrespline <name> <respline>
+      ...
+
+  A 'matchline' is what needs to be said on the channel for this
+  response to be matched.  A 'respline' is the actual text which
+  will be said by the bot when this response is matched.
+
+  For specific examples see help on 'response-examples'.
+
+%end
+#################################################################
+%subject responses
+
+  Keep the following in mind:  The term 'response' refers to a 
+  collection of 'response lines'.
+
+  The following commands are used to program responses:
+      newresponse, delresponse, addrespline, delrespline,
+      addrespmatch, delrespmatch, newrespmatch, addrespexcept,
+      delrespexcept, newrespexcept, showresponse, searchresponse
+
+  When creating a response, the order of events is usually
+      newresponse <type> <name>
+      addrespmatch <name> <matchline>
+      addrespline <name> <respline>
+      addrespline <name> <respline>
+      ...
+
+  A 'matchline' is what needs to be said on the channel for this
+  response to be matched.  A 'respline' is the actual text which
+  will be said by the bot when this response is matched.
+
+  For specific examples see help on 'response-examples'.
+
+%end
+#################################################################
+%subject response-examples
+
+  Here's how one would go about creating a response that
+  responded whenever someone typed "\n, who are you?"  It
+  is of the type 'private' since we require the bot's nick.
+
+    newresponse private whoareyou
+    addrespmatch whoareyou who are you, who're you
+    addrespline whoareyou I'm not a bot if that's what you think.
+    addrespline whoareyou Oh, I'm just a happy little bot.
+
+  And one for lyrics, if a lyrics type existed:
+
+    newresponse lyrics Coil
+    addrespmatch Coil coil
+    addrespexcept Coil this mortal coil
+    addrespline Coil "...See his hands... look at the fingers..."
+
+  The use of 'except' lines are used to block matches.  Without
+  the 'except' line above, the response Coil would be evaluated
+  any time the words "this mortal coil" were found.  The 'except'
+  line says "match 'coil' except if 'this mortal coil' is found."
+
+%end
+#################################################################
+%subject server
+Usage: server <raw messages>
+
+  Used for debugging.  To the bot, the raw messages look like
+  they're coming from a server.
+
+%end
+#################################################################
+%subject die
+Usage: die [message]
+
+  Use this command to kill the bot.  All datafiles are written
+  to disk before exiting.  To kill the bot from the command line,
+  you can send a HUP, TERM, or QUIT to the bot process, or run
+  the bot executable with the -k switch.
+
+%end
+#################################################################
+%subject boot
+Usage: boot <socket #>
+
+  Use this command to boot a DCC user from the bot.  Arguments
+  are socket numbers which are shown from 'dccinfo' or 'notify'.
+
+  For example, if dccinfo showed the following
+
+  --- ----- --- --------- ----------------------------- ---- ----
+   I7 14:01  0s Arkham    stever@asylum.rt66.com        0.2k   2k
+   S5 14:01  9m Server002 grufti@callisto.unm.edu       0.0k 0.0k
+   S4 14:01  9m Server001 grufti@callisto.unm.edu       0.0k 0.0k
+  --- ----- --- --------- ----------------------------- ---- ----
+
+  and we wanted to boot Arkham from the bot, we'd type 'boot 7'.
+
+%end
+#################################################################
+%subject raw
+Usage: raw <server message>
+
+  Used to send raw messages to the server.
+
+%end
+#################################################################
+%subject chat
+Usage: chat
+
+  Tells the bot to send a DCC chat request to you.  Most useful
+  when a client is behind a firewall, in which case the client
+  does not have authorization to initiate a DCC chat request.
+
+  If you the bot seems to be ignoring your DCC chat requests, you
+  may be behind a firewall.  Try this command.
+
+%end
+#################################################################
+%subject register
+Usage: register <username> <password>
+
+  Use this command to create a new \n account.
+
+  Once registered, you will be able to change your finger and
+  plan info as shown from a finger, send and read Notes, and
+  you will have the capability of acquiring levels on the bot.
+  Your username should be chosen as your most commonly used nick.
+
+  Once you are registered, you can add alternate nicks to your
+  account by using the command 'addnick'.
+
+%end
+#################################################################
+%subject setpass
+Usage: setpass <password>
+
+  Use this command to set or change your password.  Passwords are
+  needed to gain access to your account.
+
+%end
+#################################################################
+%subject chpass
+Usage: chpass <username> <newpassword>
+
+  Use this command to change the password for a user in case it
+  is forgotten.
+
+%end
+#################################################################
+%subject chusername
+Usage: chusername <desired username>
+
+  Use this command to change the username for your \n
+  account.  Your current username is automatically added as an
+  alternate nick if your desired username is not one of your own
+  alternate nicks.  (You must always have a nick which matches
+  your username)
+
+%end
+#################################################################
+%subject addnick
+Usage: addnick <nick>
+
+  Use this command to add alternate nicks to your account.
+
+  Alternate nicks allow you to use multiple nicks on IRC, and
+  still have a central \n account for finger information
+  and Notes.
+
+  They also serve to specify which nicks are authorized to use
+  your account.  However, you still need a password to gain
+  access.
+
+%end
+#################################################################
+%subject delnick
+Usage: delnick <nick>
+
+  Use this command to delete a nick from your account.  You must
+  always have a nick which matches your username.
+
+%end
+#################################################################
+%subject setrealname
+Usage: setrealname <finger info>  (known as 'setfinger')
+
+  Use this command to set or change your finger info for your
+  account.  Your finger info is shown as the text right after
+  your account name in a finger display, and is included in all
+  outgoing Notes and notify displays.
+
+  Use 'none' to clear it.
+
+%end
+#################################################################
+%subject setname
+Usage: setname <finger info>  (known as 'setfinger')
+
+  Use this command to set or change your finger info for your
+  account.  Your finger info is shown as the text right after
+  your account name in a finger display, and is included in all
+  outgoing Notes and notify displays.
+
+  Use 'none' to clear it.
+
+%end
+#################################################################
+%subject setfinger
+Usage: setfinger <finger info>
+
+  Use this command to set or change your finger info for your
+  account.  Your finger info is shown as the text right after
+  your account name in a finger display, and is included in all
+  outgoing Notes and notify displays.
+
+  Use 'none' to clear it.
+
+%end
+#################################################################
+%subject setemail
+Usage: setemail <email addy>
+
+  Use this command to set or change the email address in your
+  email slot, which is shown in your 'finger' display.
+
+  Use 'none' to clear it.
+
+  See help on the 'setother' command to see how you can create
+  your own information slots.
+
+%end
+#################################################################
+%subject setwww
+Usage: setwww <www addy>
+
+  Use this command to set or change the www address in your www
+  slot, which is shown in your 'finger' display.  You'll need to
+  specify the entire URL which includes the 'http://'.  From the
+  web page, your URL is hyperlinked, so users viewing your finger
+  info from the web page can click and go directly to your page.
+
+  Use 'none' to clear it.
+
+  See help on the 'setother' command to see how you can create
+  your own information slots.
+
+%end
+#################################################################
+%subject setother
+Usage: setother <type> <info>
+
+  Use this command to create your own information slot for your
+  account.  Any word can be used for <type> (it is truncated to
+  7 characters).  'other' slots show up in your 'finger' display.
+
+  The following are some examples you can use
+
+     setother1 music Download, Skinny Puppy, Dead Can Dance
+     setother2 phone 867-5309
+     setother3 fetish hmm...
+
+  Use 'showother' to display all available info slots.
+
+  You have 10 slots which you can use for 'other' information.
+  Set them with 'setother1' through 'setother10'.  (The command
+  'setother' defaults to 'setother1')
+
+%end
+#################################################################
+%subject showothers
+Usage: showothers
+
+  Use this command to display all your info slots.  Info slots
+  can be set with the 'setother' command.
+
+%end
+#################################################################
+%subject showother
+Usage: showother
+
+  Use this command to display all your info slots.  Info slots
+  can be set with the 'setother' command.
+
+%end
+#################################################################
+%subject delother
+Usage: delother <#>
+
+  Use this command to delete an info slot.  You can also use
+  'setother none' to erase it.  Use 'showother' to display all
+  info slots.
+
+%end
+#################################################################
+%subject setplan
+Usage: setplan <plan info>
+
+  Use this command to set or change your plan for your account.
+  Your plan information shows up in your 'finger' display.
+
+  Use 'none' to set it to nothing.  (Tip: to embed spaces in your
+  plan, use '.' as the first character.  It will not be printed.)
+
+  You can control how the plan is displayed by setting individual
+  plan lines using the commands 'setplan1' through 'setplan6'.
+  (The command 'setplan' defaults to 'setplan1')
+
+  A plan line which is longer than one screenwidth is copied over
+  to the next line, so you can enter in an entire paragraph on
+  one plan line without typing 'setplan1, setplan2,' etc..
+
+%end
+#################################################################
+%subject setlocat
+Usage: setlocation <location #>
+
+  Use this command to set or change the location in your location
+  slot, which is shown on your 'finger' display.  The location #
+  is a predefined number.  To see which locations are available,
+  type 'showlocations'.
+
+  The reason predefined locations are used and not just some
+  arbitrary phrase is so that users can use the 'whoisin' command
+  to find out who is located in a particular region.  The slot
+  consists of 3 fields, a city, state or region, and country.
+  You can search locations by any of these fields.
+
+  If your location is not listed in the 'showlocations' listing
+  you can add it with 'addlocation'.  See help on 'addlocation'
+  for more info.
+
+%end
+#################################################################
+%subject setlocation
+Usage: setlocation <location #>
+
+  Use this command to set or change the location in your location
+  slot, which is shown on your 'finger' display.  The location #
+  is a predefined number.  To see which locations are available,
+  type 'showlocations'.
+
+  The reason predefined locations are used and not just some
+  arbitrary phrase is so that users can use the 'whoisin' command
+  to find out who is located in a particular region.  The slot
+  consists of 3 fields, a city, state or region, and country.
+  You can search locations by any of these fields.
+
+  If your location is not listed in the 'showlocations' listing
+  you can add it with 'addlocation'.  See help on 'addlocation'
+  for more info.
+
+%end
+#################################################################
+%subject showlocations
+Usage: showlocations [region]
+
+  Use this command to display all available locations and their
+  id number for use in your location slot.  To view locations
+  in a particular region only, specify the region.  For example,
+  if you want to see which locations are available for all of
+  California, you could type 'showlocations CA'.
+
+  To set your location slot, you must use one of the location
+  numbers listed in this display.  If your location is not
+  listed in the 'showlocations' listing, you can add it with
+  'addlocation'.  See help on 'addlocation' for more info.
+
+%end
+#################################################################
+%subject chlocation
+Usage: chlocation <#> <city>, <state>, <country>
+
+  Use this command to change a location you have added.  The <#>
+  is the location # you would like to change, and the city,
+  state, and country arguments are the new values.
+
+  Locations can only be changed by the user who added them, and
+  only within a certain amount of time after it was added.
+
+%end
+#################################################################
+%subject addlocation
+Usage: addlocation <city>, <state>, <country>
+
+  Use this command to add a location to the locations list.
+  City, state, and country arguments must be separated by commas.
+  Please use abbreviations for the state.  If the state does not
+  apply, simply omit.
+
+  For example: To add Salem's Lot, MA you would type:
+      addlocation Salem's Lot, MA, USA
+
+  For example: To add Berlin, Germany you would type:
+      addlocation Berlin, , Germany
+
+  Please try to keep the locations in this format.  If you live
+  in a small city, but want to be included in the listing when
+  someone types 'whoisin SF Bay Area', then by all means use
+  the "SF Bay Area" location.  You are not obligated to use your
+  exact town.
+
+%end
+#################################################################
+%subject dellocation
+Usage: dellocation <#>
+
+  Use this command to delete a location from the locations list.
+  You can only delete locations which you have added, and only
+  within a certain amount of time after it was added.
+
+%end
+#################################################################
+%subject unregister
+Usage: unregister <username>
+
+  Use this command to delete your \n account.  Any Notes
+  and personal information it holds will be deleted, along with
+  any levels you may have acquired.
+
+%end
+#################################################################
+%subject motd
+Usage: motd [server]
+
+  Use this command to view the message of the day.  This is
+  the same motd as seen upon a dcc chat connection.
+
+  If a server is specified, the bot will show you the motd for
+  that server provided the bot has previously connected with it.
+
+%end
+#################################################################
+%subject reset-motd
+Usage: reset-motd
+
+  Use this command to reset the last time the motd was modified.
+  You must do this every time you modify the motd or else it will
+  not be displayed.
+
+%end
+#################################################################
+%subject pass
+Usage: pass <password> [userhost]
+
+  Use this command to identify yourself to the bot.  If your
+  levels include +o for a channel, you can get ops on that 
+  channel just by sending your password.
+
+  If your identification occurs via DCC, your session is
+  considered 'secure' and you will not have to send your password
+  again until the DCC connection is disconnected.
+
+  If your identification occurs via /msg'ing, you will have to
+  send your password for every command which requires it.  It is
+  to your advantange to use DCC for normal bot interaction.
+
+  If you are behind a firewall (your client cannot initiate DCC
+  chats), you can use the 'chat' command to make the bot chat
+  request you.  Try this if the bot is ignoring your requests.
+
+%end
+#################################################################
+%subject exit
+Usage: exit
+
+  Disconnects your DCC chat or telnet session!
+
+%end
+#################################################################
+%subject bye
+Usage: bye
+
+  Disconnects your DCC chat or telnet session!
+
+%end
+#################################################################
+%subject quit
+Usage: quit
+
+  Disconnects your DCC chat or telnet session!
+
+%end
+#################################################################
+%subject addserver
+Usage: addserver <servername> [port]
+
+  Use this command to add a server to the serverlist.  Use the
+  'jump' command to connect with it.  Another of adding servers
+  to the bot is by using the 'jump' command.  If the server
+  doesn't exist it will be added automatically.
+
+  For a list of servers and their connection status, use the
+  command 'servinfo'.  For a list of servers and their disconnect
+  reasons type 'servinfo -r'.
+
+  Note that Adding servers using the 'addserver' command does not
+  add the server to the configfile.
+
+%end
+#################################################################
+%subject jump
+Usage: jump [servername port]
+
+  Use this command to reconnect the bot with a new server.  With
+  no arguments, the bot will reconnect to the next server in the
+  list.
+
+  If the server doesn't exist in the server list, it will be
+  added automatically.  This is the same as adding the server
+  with 'addserver <server>', then doing 'jump <server>'.
+
+%end
+#################################################################
+%subject delserver
+Usage: delserver <servername> [port]
+
+  Use this command to delete a server from the serverlist.  The
+  server is only deleted from the internal serverlist, not from
+  the configfile itself.
+
+  If the server which is deleted is the current server, the bot
+  will automatically jump to the next server.  If the server
+  which is deleted is the only server in the list, the bot will
+  disconnect from IRC, but will still accept telnet connections.
+
+%end
+#################################################################
+%subject setvar
+Usage: setvar <variable> <value>
+
+  Use this command to set an internal variable.  Internal
+  variable are the same as the config file 'set' variables.  Any
+  configfile 'set' variable can be changed with this command.
+
+  This is a very powerful command, since you can reset config
+  file variables on the fly.  Note that this command does not
+  write the changes to the configfile.  It is useful when you are
+  tweaking the bot and experimenting with values, and also when
+  you need to change one value temporarily, like the value of
+  min-servers for example.
+
+  Use the 'configinfo' command to display all variables and their
+  current values.
+
+%end
+#################################################################
+%subject servinfo
+Usage: servinfo [-r]
+
+  Displays the server list.
+
+  The 'Net' column shows how many servers were visible to this
+  server the last time it was connected.  Typical numbers are
+  around 70.  When this number is very small, it usually means
+  the server was split off from the rest of the IRC network.
+  You can use the 'min-servers' variable to tell the bot to jump
+  servers when this number becomes too low.
+
+  Use 'servinfo -r' to show any disconnect reasons.  Servers
+  which have been disconnected unusually are shown with a symbol
+  next to the server name.  Symbols are defined as
+
+    -> - This server is current and active
+    !  - Connection to this server failed
+    ?  - Server hasn't been tried
+    B  - Server has us banned
+    *  - A connection was established, but we couldn't get active
+
+%end
+#################################################################
+%subject showservers
+Usage: showservers [-r]   (known as 'servinfo')
+
+  Displays the server list.
+
+  The 'Net' column shows how many servers were visible to this
+  server the last time it was connected.  Typical numbers are
+  around 70.  When this number is very small, it usually means
+  the server was split off from the rest of the IRC network.
+  You can use the 'min-servers' variable to tell the bot to jump
+  servers when this number becomes too low.
+
+  Use 'servinfo -r' to show any disconnect reasons.  Servers
+  which have been disconnected unusually are shown with a symbol
+  next to the server name.  Symbols are defined as
+
+    -> - This server is current and active
+    !  - Connection to this server failed
+    ?  - Server hasn't been tried
+    B  - Server has us banned
+    *  - A connection was established, but we couldn't get active
+
+%end
+#################################################################
+%subject servers
+Usage: servers [-r]   (known as 'servinfo')
+
+  Displays the server list.
+
+  The 'Net' column shows how many servers were visible to this
+  server the last time it was connected.  Typical numbers are
+  around 70.  When this number is very small, it usually means
+  the server was split off from the rest of the IRC network.
+  You can use the 'min-servers' variable to tell the bot to jump
+  servers when this number becomes too low.
+
+  Use 'servinfo -r' to show any disconnect reasons.  Servers
+  which have been disconnected unusually are shown with a symbol
+  next to the server name.  Symbols are defined as
+
+    -> - This server is current and active
+    !  - Connection to this server failed
+    ?  - Server hasn't been tried
+    B  - Server has us banned
+    *  - A connection was established, but we couldn't get active
+
+%end
+#################################################################
+%subject time
+Usage: time
+
+  Displays the current time, according to the bot.
+
+%end
+#################################################################
+%subject date
+Usage: date
+
+  Displays the current date, according to the bot.
+
+%end
+#################################################################
+%subject who
+Usage: who [-s] <#channel>
+
+  Use this command to display a listing of all users on the
+  specified channel.
+
+  Use the -s switch to see statistics for the last 24 hours for
+  the specified channel.
+
+%end
+#################################################################
+%subject help
+Usage: help [topic | command]
+
+  Displays contents of help!
+
+%end
+#################################################################
+%subject finger
+Usage: finger [nick | user@hostmask]
+
+  Use this command to display finger information for the
+  specified user.  If no arguments are given, all registered
+  \n users who are on IRC are shown in short format.
+
+  A 'finger' listing shows any information a user has set for
+  him or herself, and which nicks they are known by on IRC.  The
+  following symbols may appear next to a nick
+
+     '+'  The user is on IRC somewhere with this nick
+     '*'  The user is connected via DCC with this nick
+     '&'  The user is connected via telnet with this nick
+
+  Use the 'whois' command to display a list of hostmasks the user
+  has been seen using, or with which they have registered.
+
+  To see statistical information about any \n user, use
+  the command 'stat'.  (For example, 'stat Arkham')
+
+%end
+#################################################################
+%subject whois
+Usage: whois <nick | user@hostmask>
+
+  Displays a list of hostmasks the user has registered with,
+  or for which they have been seen using.
+
+  If the argument is in the form user@hostmask, all users which
+  match that hostmask are displayed.  This is handy when you are
+  trying to find information for a specified user and you only
+  know their hostmask.
+
+%end
+#################################################################
+%subject adduser
+Usage: adduser <username> <password>
+
+  Use this command to add a user to the bot.
+
+  This is handy when you want to set users up with the
+  appropriate levels and you don't want to wait for them all to
+  register.
+
+%end
+#################################################################
+%subject deluser
+Usage: deluser <username>
+
+  Use this command to delete a registered user.  All Notes,
+  personal information, levels, and greetings are deleted.
+
+  No prompt is given, so be cautious!
+
+%end
+#################################################################
+%subject notify
+Usage: notify
+
+  Use this command to display a list of all registered \n
+  users who are on IRC or connected to the bot.  Similar to the
+  unix 'finger' command.
+
+  ID connection types are described as
+
+    I - DCC client established over IRC
+    T - DCC client established over a public telnet port
+    G - DCC client established over a gateway telnet port
+    W - DCC client established from the webpage (gateway telnet)
+    X - DCC client in the process of DCC send or receive
+
+  Use 'notify' with no arguments to display all registered users
+  who are on IRC. 
+
+  Use 'notify -a' to display all registered users who are on IRC
+  and users who are connected to the bot via DCC or telnet.
+
+%end
+#################################################################
+%subject seen
+Usage: seen <nick | user@hostmask>
+
+  Use this command to see when the last time a user was seen by
+  the bot.  This same information can be found by typing
+  "\n have you seen <nick>" on the channel.
+
+  If the argument is in the form user@hostmask, a list of all
+  \n users which match that hostmask are displayed in
+  the order of when they were last seen.
+
+%end
+#################################################################
+%subject write
+Usage: write <botfile>
+
+  Use this command to write a botfile to disk.
+
+  The following botfiles are supported
+
+    userlist, response, locations, events, webcatch, stats,
+    banlist
+
+  Type 'write all' to write all files.
+
+%end
+#################################################################
+%subject addthisnick
+Usage: addthisnick <username> <password>
+
+  Use this command to add your current IRC nick to your account.
+
+  This is handy when you are using a nick which doesn't yet
+  belong to your account, and you don't want to (or can't) change
+  to a nick in your account to add it.
+
+%end
+#################################################################
+%subject wallnote
+Usage: wallnote <levels> <msg>
+
+  Use this command to send mass Notes to users matching levels.
+  For example, 'wallnote +3o-t Hey folks' would send the message
+  to all users with +3 and +o, and not +t.
+
+%end
+#################################################################
+%subject note
+Usage: note <nick> <msg>
+
+  Use this command to send a \n Note to another user.
+  Recipients must be registered users.
+
+  Once you have sent a Note, use 'addnote' to add more text to
+  the Note just sent, or 'showmynote' to display it.
+
+%end
+#################################################################
+%subject addnote
+Usage: addnote <nick> <more text...>
+
+  Use this command to add more text to a previously sent Note.
+  It works with any nick you've sent a Note to, as long as that
+  person hasn't read or deleted the Note.
+
+%end
+#################################################################
+%subject showmynote
+Usage: showmynote <nick>
+
+  Use this command to display the last Note you sent to a certain
+  user.  It works with any nick you've sent a Note to, as long
+  as that person hasn't read or deleted the Note.
+
+%end
+#################################################################
+%subject memo
+Usage: memo <msg>
+
+  Use this command to send a quick Memo to yourself.  Memos are
+  marked as 'm' in the Notes display.  Type 'rn memo' to display
+  an index of only your Memos.
+
+  Memos can be saved like Notes.  See help on 'savenote' for
+  more information.
+
+%end
+#################################################################
+%subject nn
+Usage: nn [nick]
+
+  Use this command to display the number of Notes you have.  If
+  a nick is specified, the number of notes for that user is
+  displayed.
+
+%end
+#################################################################
+%subject rn
+Usage: rn [# | n | type | nick]
+
+  Use this command to display your Notes.
+
+  To read an individual Note, specify its number.
+  To read the next unread Note, specify 'n'.
+  To display a list of only certain types, specify 'type'.
+  To read the last note sent by a user, specify their 'nick'.
+
+  In index form, the following symbols are used to denote the
+  type of Note:
+
+      '*' - The Note is saved  (see help on 'savenote')
+      'N' - The Note is new
+      'm' - The Note is a memo  (Memos may be saved like Notes)
+      '!' - The Note is a \n Notice
+
+  The Subject merely shows the first few words in the Note.  This
+  makes finding a particular Note easy when you have many Notes.
+
+  See help on 'forward' to have your Notes sent to an email acct!
+
+%end
+#################################################################
+%subject dn
+Usage: dn <#> [# ... ]
+
+  Use this command to delete Notes.  Arguments are numbers, and
+  multiple arguments can be given.  Use '*' to delete all Notes.
+
+  Notes timeout and are deleted automatically unless they have
+  been marked 'saved'.  See help on 'savenote' for details.
+
+%end
+#################################################################
+%subject delnote
+Usage: delnote <#> [# ... ]
+
+  Use this command to delete Notes.  Arguments are numbers, and
+  multiple arguments can be given.  Use '*' to delete all Notes.
+
+  Notes timeout and are deleted automatically unless they have
+  been marked 'saved'.  See help on 'savenote' for details.
+
+%end
+#################################################################
+%subject savenote
+Usage: savenote <#>
+
+  Use this command to mark a Note as 'saved'.  Saved Notes do not
+  timeout, and remain in your account until you delete them.  You
+  can only save a specific number of Notes.
+
+  Since Notes are deleted automatically after a specified amount
+  of time, this gives you a way to hold onto important Notes, and
+  let other, unimportant Notes timeout on their own.
+
+  Saved Notes are unsaved with the 'unsavenote' command.
+
+  See help on 'forward' to have your Notes sent to an email acct!
+
+%end
+#################################################################
+%subject unsavenote
+Usage: unsavenote <#>
+
+  Use this command to unsave a previously saved Note.
+
+%end
+#################################################################
+%subject dccinfo
+Usage: dccinfo [-t]
+
+  Use this command to display the DCC table.  The display lists
+  the DCC ID, when it was established, how long it has been idle,
+  its name and userhost, and how much data has passed in and out.
+
+  The ID consists of two parts.  The first part is the letter
+  which describes the type of DCC connection.  The second is the
+  socket number to which that connection is connected.
+
+  ID connection types are described as
+
+    I - DCC client established over IRC
+    T - DCC client established over a public telnet port
+    G - DCC client established over a gateway telnet port
+    W - DCC client established from the webpage (gateway telnet)
+    X - DCC client in the process of DCC send or receive
+    S - DCC server listening on public and private telnet ports
+
+  Use the -t switch to display a more detailed listings showing
+  the type and flags for each connection.
+
+%end
+#################################################################
+%subject showdcc
+Usage: showdcc [-t]   (known as 'dccinfo')
+
+  Use this command to display the DCC table.  The display lists
+  the DCC ID, when it was established, how long it has been idle,
+  its name and userhost, and how much data has passed in and out.
+
+  The ID consists of two parts.  The first part is the letter
+  which describes the type of DCC connection.  The second is the
+  socket number to which that connection is connected.
+
+  ID connection types are described as
+
+    I - DCC client established over IRC
+    T - DCC client established over a public telnet port
+    G - DCC client established over a gateway telnet port
+    W - DCC client established from the webpage (gateway telnet)
+    X - DCC client in the process of DCC send or receive
+    S - DCC server listening on public and private telnet ports
+
+  Use the -t switch to display a more detailed listings showing
+  the type and flags for each connection.
+
+%end
+#################################################################
+%subject cmdinfo
+Usage: cmdinfo [-l] [levels]
+
+  Use this command to display a listing of all configured bot
+  commands.  Use the -l switch to display a longer, more detailed
+  listing including hit count and levels required.
+
+  To view all the commands which require a certain level, specify
+  a level after the command..
+
+  For example: to display all commands which require +o type
+      cmdinfo o
+
+  This is handy for viewing commands you have access to like +l
+  or +o, or to see how the \n you are using is configured.
+
+%end
+#################################################################
+%subject showcommands
+Usage: showcommands [-l] [levels]   (known as 'cmdinfo')
+
+  Use this command to display a listing of all configured bot
+  commands.  Use the -l switch to display a longer, more detailed
+  listing including hit count and levels required.
+
+  To view all the commands which require a certain level, specify
+  a level after the command..
+
+  For example: to display all commands which require +o type
+      cmdinfo o
+
+  This is handy for viewing commands you have access to like +l
+  or +o, or to see how the \n you are using is configured.
+
+%end
+#################################################################
+%subject codesinfo
+Usage: codesinfo
+
+  Use this command to display server codes and how often each
+  has been received.  Primarily for debugging, but interesting
+  to see how many server codes have been processed.
+
+%end
+#################################################################
+%subject showcodes
+Usage: showcodes  (known as 'codesinfo')
+
+  Use this command to display server codes and how often each
+  has been received.  Primarily for debugging, but interesting
+  to see how many server codes have been processed.
+
+%end
+#################################################################
+%subject whoisin
+Usage: whoisin <city | state | country>
+
+  Use this command to display a listing of all registered users
+  located in a particular region.
+
+  Type 'showlocations' to view all location possibilities.
+
+%end
+#################################################################
+%subject webcatch
+Usage: webcatch [# hits]
+
+  \n catches and stores any web addresses that scroll by
+  on the channel.
+
+  Use this command to view the last 20 catches that have been
+  made during the course of the day.  To view a number other
+  than 20, specify that number after the command.
+
+  This lets you get that important address that just scrolled by,
+  or lets you check out what web pages have been talked about
+  during the day.
+
+%end
+#################################################################
+%subject clearwebcatch
+Usage: clearwebcatch
+
+  Use this command to clear out all entries in the webcatch.
+
+%end
+#################################################################
+%subject addgreet
+Usage: addgreet <greet>
+
+  Use this command to set the greeting \n greets you with
+  when you join the channel.  When multiple greet lines are set,
+  a greeting is chosen at random each time you join.
+
+  The only catch is that you must specify a \\n somewhere in your
+  greeting, which translates into your nick when you join.
+
+  Other translation characters you can use are:
+    \\c - the channel you're joining
+    \\g - bot's main nick
+    \\H - hour   (\\h for unpadded)
+    \\N - min    (\\m for unpadded)
+    \\T - second (\\t for unpadded)
+    \\b, \\u, \\i - bold, underline, inverse
+
+  To say an ACTION, use /m at the beginning of the line.
+
+  Example: /m greets \\n with a warm *hug*
+  Yields:  * \n greets Arkham with a warm *hug*
+
+%end
+#################################################################
+%subject showgreets
+Usage: showgreets [-t]
+
+  Use this command to display your greetings.  Use the -t switch
+  to display the greetings as they would be displayed in public,
+  with all the translations appropriately translated.
+
+  Use 'addgreet' and 'delgreet' to add and delete greetings.
+
+%end
+#################################################################
+%subject delgreet
+Usage: delgreet <# | *>
+
+  Use this command to delete one or more of your greetings.
+  Arguments are numbers, and multiple arguments can be used.
+  Use '*' to delete all greetings.
+
+  Use the 'showgreets' command to display your greetings.
+
+%end
+#################################################################
+%subject mode
+Usage: mode <nick> [<+|->levels]
+
+  Use this command to add or subtract a user's levels.  If no
+  levels are given, the user's current levels are displayed.
+
+  A \n Notice is sent to the user each time a level is given
+  or taken away.
+
+%end
+#################################################################
+%subject telnet
+Usage: telnet
+
+  Displays the host and port of one of the bot's public telnet
+  servers, if any are available.
+
+%end
+#################################################################
+%subject maintainer
+Usage: maintainer
+
+  Displays who the bot's maintainer is.
+
+%end
+#################################################################
+%subject version
+Usage: version
+
+  Display the bot's version.
+
+%end
+#################################################################
+%subject ver
+Usage: ver
+
+  Display the bot's version.
+
+%end
+#################################################################
+%subject homepage
+Usage: homepage
+
+  Displays the bot's homepage, if one exists.
+
+%end
+#################################################################
+%subject uptime
+Usage: uptime
+
+  Displays how long the bot has been running.
+
+%end
+#################################################################
+%subject searchresponse
+Usage: searchresponse <text>
+
+  Use this command to display responses based on the match
+  fields.  For example, type 'searchresponse thanks' to see which
+  responses will match the string 'thanks'.
+
+  Keep in mind that only one response should be returned for each
+  match text.  When more than one response matches text, you
+  should use except lines to filter matching for the unwanted
+  response.
+
+%end
+#################################################################
+%subject showresponse
+Usage: showresponse [response type | response name]
+
+  Display all the responses for a given type.  To display all the
+  the responses for the type lyrics (if it existed), one would
+  type 'showresponses lyrics'.
+
+  To display the details of an individual response, specify the
+  response name.  For example, to display the "hi" response type
+  'showresponse hi'.
+
+  With no arguments, the command displays all the types which are
+  currently configured.
+
+  Use 'searchresponse' to display responses based on the match
+  fields.  For example, type 'searchresponse thanks' to see which
+  responses will match the string 'thanks'.
+
+%end
+#################################################################
+%subject addrespline
+Usage: addrespline <response name> <response line>
+
+  Add response lines to an existing response.  For example, if
+  a 'Coil' response existed, lyrics for the Coil response could
+  be added with the command 'addrespline Coil "..some lyrics..."'
+
+  See help on 'addrespmatch' and 'newresponse' for more info.
+  See help on the subject 'response' for a summary of the
+  commands involved in programming responses.
+
+%end
+#################################################################
+%subject newresponse
+Usage: newresponse <response type> <response name>
+
+  Create a new response under a specified type.  For example,
+  if a lyrics type exists, one could create a new response for
+  Coil lyrics with the command 'newresponse lyrics Coil'.
+
+  Response names must be a single word with no spaces.  Remember
+  that a response is the collection of response lines.  Also
+  keep in mind that the name of the response has nothing to do
+  with how the response is matched.  Just because the response
+  above was named Coil doesn't mean it will match when someone
+  tries to have the bot sing coil.  Response 'match lines' are
+  the lines which are configured to do that.
+
+  See help on 'addrespmatch' and 'addrespline' for more info.
+  See help on the subject 'response' for a summary of the
+  commands involved in programming responses.
+
+%end
+#################################################################
+%subject delresponse
+Usage: delresponse <response name>
+
+  Use this command to delete an entire response.  Remember, a
+  response is the collection of all response lines.  If you're
+  trying to delete a single response line from a response, use
+  the command 'delrespline'.
+
+  See help on the subject 'response' for a summary of the
+  commands involved in programming responses.
+
+%end
+#################################################################
+%subject delrespline
+Usage: delrespline <response name> <line #>
+
+  Use this command to delete a response line from the specified
+  response.  For example, to delete response line #4 from the
+  Coil response, one would type 'delrespline coil 4'.
+
+  The numbers are listed beside the response lines in the
+  'showresponse' listing.
+
+  See help on the subject 'response' for a summary of the
+  commands involved in programming responses.
+
+%end
+#################################################################
+%subject addrespmatch
+Usage: addrespmatch <response name> <matchline>
+
+  Appends a match word to the match line for the response.
+
+  For example, if the matches for this response looked like
+
+      Match 1: hugs, kisses
+
+  and we wanted to add 'some love', we'd type 
+      addrespmatch love some love
+
+  which would result in the matches looking like
+
+      Match 1: hugs, kisses, some love
+
+  Notice how this command is different from the 'newrespmatch'
+  command in that it adds matches to an exising line, as opposed
+  to creating an entirely new matchline.
+
+  See help on the subject 'response' for a summary of the
+  commands involved in programming responses.
+
+%end
+#################################################################
+%subject newrespmatch
+Usage: newrespmatch <response name> <matchline>
+
+  Creates another matchline for the response.  For example, if
+  the response consisted of the following matchlines
+
+      Match 1: hugs, kisses, some love
+
+  and we wanted to match 'give me' or 'gimme' with either of
+  those matches, we would type
+
+      newrespmatch love give me, gimme
+
+  The response would now have the following matchlines
+
+      Match 1: hugs, kisses, some love
+      Match 2: give me, gimme
+
+  This causes the response to be matched only if something from
+  the first line AND the second line is matched.  So 'gimme some
+  love' or 'give me crack' would match but just 'some love' or
+  'give me' would not.
+
+%end
+#################################################################
+%subject delrespmatch
+Usage: delrespmatch <response name> <match #>
+
+  Use this command to delete a matchline from the specified
+  response.
+
+  The numbers are listed beside the response match lines in the
+  'showresponse' listing.
+
+  Notice that there is no 'chrespmatch' command, which means if
+  you want to edit a line, you'll have to delete it and use the
+  'newrespmatch' command to add it again.
+
+  See help on the subject 'response' for a summary of the
+  commands involved in programming responses.
+
+%end
+#################################################################
+%subject addrespexcept
+Usage: addrespexcept <response name> <exceptline>
+
+  Appends an except word to the except line for the response.
+  Works in the same way as 'addrespmatch' above.
+
+  See help on the subject 'response' for a summary of the
+  commands involved in programming responses.
+
+%end
+#################################################################
+%subject delrespexcept
+Usage: delrespexcept <response name> <except #>
+
+  Use this command to delete an except line from the specified
+  response.
+
+  The numbers are listed beside the response except lines in the
+  'showresponse' listing.
+
+  Notice that there is no 'chrespexcept' command, which means if
+  you want to edit a line, you'll have to delete it and use the
+  'newrespexcept' command to add it again.
+
+  See help on the subject 'response' for a summary of the
+  commands involved in programming responses.
+
+%end
+#################################################################
+%subject op
+Usage: op [channel] [nick]
+
+  Use this command to op yourself, or, if a nick is specifed,
+  op that nick.  If no channel is specified, you or the specified
+  nick is opped on all botted channels.
+
+%end
+#################################################################
+%subject whoami
+Usage: whoami
+
+  Use this command to display your account information.  This is
+  the same as doing 'finger <user>' where <user> is your account
+  name.
+
+%end
+#################################################################
+%subject users
+Usage: users [-a] [levels]
+
+  Use this command to display all users who are registered on the
+  bot and their user number.  If levels are given, only users who
+  have that level are displayed.  Multiple levels can be used
+  such as
+
+     users mto
+
+  which would display all users matching +m, +t, or +o.
+
+  If the switch -a is specified, the list is displayed in
+  alphabetical order by username instead of by registration.
+
+%end
+#################################################################
+%subject say
+Usage: say <channel> <message>
+
+  Use this command to have the bot say something to the channel.
+
+  Use the 'act' command to do actions.
+
+%end
+#################################################################
+%subject act
+Usage: act <channel> <message>
+
+  Use this command to have the bot send an action to the channel.
+
+  Use the 'say' command to have the bot say something.
+
+%end
+#################################################################
+%subject configinfo
+Usage: configinfo
+
+  Use this command to display all internal configuration settings
+  on the bot.  These are the same entries which exist in the
+  config file.  You can change any of these entries with the
+  'setvar' command.
+
+  See help on 'setvar' for details for this command.
+
+%end
+#################################################################
+%subject showconfig
+Usage: showconfig  (known as 'configinfo')
+
+  Use this command to display all internal configuration settings
+  on the bot.  These are the same entries which exist in the
+  config file.  You can change any of these entries with the
+  'setvar' command.
+
+  See help on 'setvar' for details for this command.
+
+%end
+#################################################################
+%subject showconfigs
+Usage: showconfigs  (known as 'configinfo')
+
+  Use this command to display all internal configuration settings
+  on the bot.  These are the same entries which exist in the
+  config file.  You can change any of these entries with the
+  'setvar' command.
+
+  See help on 'setvar' for details for this command.
+
+%end
+#################################################################
+%subject watchlog
+Usage: watchlog <+|-><type> [channel]
+
+  Use this command to monitor a particular log.  Log types are
+  of the following: main, public, raw, cmd, error, debug
+
+  Multiple logs can be watched.  Use + or - to turn on or off
+  watching a log.  If the log type 'public' is specified, a
+  channel must also be specified.  With no arguments, the logs
+  being currently watched and by whom are displayed.
+
+  All logwatch settings are stored in your dcc record so when
+  you disconnect your watchlog settings are discarded.  This also
+  means that you can use the watchlog command from different
+  connections, so different connections can watch different logs.
+
+  For example, to watch logs cmd, main, and public we would type
+
+     watchlog +cmd
+     watchlog +main
+     watchlog +public #grufti
+
+%end
+#################################################################
+%subject files
+Usage: files
+
+  Use this command to display which files are being offered by
+  the bot.  Files can be downloaded by using the 'send' command.
+
+%end
+#################################################################
+%subject send
+Usage: send <filename>
+
+  Use this command to have the bot send you a file.  To view
+  which files are available to download, use the 'files' command.
+
+  This command must be issued in a /msg so that the bot knows 
+  which nick to send the file.  This is due to the fact that
+  your IRC nick may change from the nick with which you first
+  connected to the bot.
+
+%end
+#################################################################
+%subject meminfo
+Usage: meminfo
+
+  Use this command to display a detailed summary of all memory
+  currently being used by the bot.
+
+%end
+#################################################################
+%subject showmem
+Usage: showmem  (known as 'meminfo')
+
+  Use this command to display a detailed summary of all memory
+  currently being used by the bot.
+
+%end
+#################################################################
+%subject topic
+Usage: topic <channel> [topic]
+
+  Use this command to set the topic on the specified channel.  If
+  no topic is specified, the current topic for that channel is
+  displayed.
+
+  If the bot is currently enforcing the topic, this command will
+  allow you to change it.  It will remain active until the topic
+  is changed again, at which time the bot will return to
+  enforcing the original topic.
+
+%end
+#################################################################
+%subject kick
+Usage: kick [channel] <nick[,nick,...]> [message]
+
+  Use this command to kick a user from the channel.  To kick
+  multiple nicks, use a comma and no spaces between nicks.  If a
+  channel is not specified, the user is kicked from all botted
+  channels.
+
+  This format is handy, since you may want to quickly kick a user
+  off the channel.  Since channel names are not necessary, you
+  need only provide the nick to kick that user.  No whining about
+  not specifying the channel occurs.
+
+%end
+#################################################################
+%subject invite
+Usage: invite <channel> [nick]
+
+  Use this command to invite yourself to the specified channel.
+  If a nick is given, the bot invites that nick.
+
+%end
+#################################################################
+%subject ban
+Usage: ban [channel] <nick[,nick,...]>
+
+  Use this command to institute a ban for someone on the channel.
+  If multiple nicks are to be banned, use a comma and no spaces
+  between nicks.  If a channel is not specified, the user is
+  banned from all botted channels.
+
+  This format is handy, since you may want to quickly ban a user
+  off the channel.  Since channel names are not necessary, you
+  need only provide the nick to ban that user.  No whining about
+  not specifying the channel occurs.
+
+%end
+#################################################################
+%subject kickban
+Usage: kickban [channel] <nick[,nick,...]> [message]
+
+  Use this command to kickban a user from the channel.  The only
+  required argument is a nick.  To kickban multiple nicks, use
+  a comma and no spaces between nicks.  If a channel is not
+  specified, the user is kickbanned from all botted channels.
+
+  This format is handy, since you may want to quickly kickban a
+  user off the channel.  Since channel names are not necessary,
+  you need only provide the nick to kickban that user.  No
+  whining about not specifying the channel occurs.
+
+%end
+#################################################################
+%subject status
+Usage: status [chatter | usage | kicks | bans | <nick>]
+
+  Use this command to display IRC and bot statistics.  With no
+  arguments, a detailed lising of bot statistics is displayed.
+  This is the same report that is sent to users with +n every
+  night at midnight.
+
+  To see the top 10 users based on public chatter, usage, kicks,
+  and bans specify one of those options above.
+
+  To see IRC statistics for a registered \n user, specify
+  their nick after the command.
+
+%end
+#################################################################
+%subject stat
+Usage: stat [chatter | usage | kicks | bans | <nick>]
+
+  Use this command to display IRC and bot statistics.  With no
+  arguments, a detailed lising of bot statistics is displayed.
+  This is the same report that is sent to users with +n every
+  night at midnight.
+
+  To see the top 10 users based on public chatter, usage, kicks,
+  and bans specify one of those options above.
+
+  To see IRC statistics for a registered \n user, specify
+  their nick after the command.
+
+%end
+#################################################################
+%subject stats
+Usage: stats [chatter | usage | kicks | bans | nick]
+
+  Use this command to display IRC and bot statistics.  With no
+  arguments, a detailed lising of bot statistics is displayed.
+  This is the same report that is sent to users with +n every
+  night at midnight.
+
+  To see the top 10 users based on public chatter, usage, kicks,
+  and bans specify one of those options above.
+
+  To see IRC statistics for a registered \n user, specify
+  their nick after the command.
+
+%end
+#################################################################
+%subject banlist
+Usage: banlist
+
+  Use this command to display the banlist.  Information which is
+  displayed in this listing includes the user who set the ban,
+  when it was set, the ban, which channels it will be enforced,
+  and how long the ban will remain in effect.
+
+  If no channels were specifed for the ban, the display will show
+  (global) and will be enforced on all channels.  If no timeout
+  period was specified, the display will show the word PERM and
+  will remain in effect until deleted with the 'delban' command.
+
+%end
+#################################################################
+%subject addban
+Usage: addban <ban> [channel] [expires]
+
+  Use this command to add a ban to the banlist.  Bans are in the
+  format nick!user@hostname.  If no channel is specified, the ban
+  will be global, and enforced on all botted channels.  If no
+  expire time is specified, the ban will be permanent and will
+  remain in effect until deleted.  Expire times are in the format
+  30m, 2h, 10d, etc.
+
+  For example, to ban all users from France for the next 2 weeks,
+  we could use the following command
+
+    addban *!*@*.fr 14d
+
+  Since no channel was specified, the ban will be enforced on
+  all botted channels.
+
+%end
+#################################################################
+%subject delban
+Usage: delban <ban>
+
+  Use this command to delete a ban from the banlist.  Bans are in
+  the form nick!user@hostname, and must match the ban listed in
+  the banlist EXACTLY.
+
+%end
+#################################################################
+%subject voice
+Usage: voice [channel] [nick]
+
+  Use this command to give yourself +v.  If a nick is specified,
+  the bot will give that user the level +v.  If no channel is
+  specified, you or the nick specified is opped on all botted
+  channels.
+
+%end
+#################################################################
+%subject leave
+Usage: leave <channel> [timeout]
+
+  Use this command to make the bot leave the specified channel.
+  If no timeout period is specified, the bot will leave for 5
+  minutes before rejoining.  Timeout periods are specified in the
+  format 10m, 45s etc.  The bot will not leave a channel for
+  more than 1 hour.
+
+%end
+#################################################################
+%subject join
+Usage: join <channel>
+
+  Use this command to make the bot rejoin a channel after it has
+  been asked to leave.
+
+%end
+#################################################################
+%subject hush
+Usage: hush <channel> [timeout]
+
+  Use this command to make the but hush on the specified channel.
+  If no timeout period is specified, the bot will remain hushed
+  for 5 minutes before resuming normal operations.  Timeout
+  periods are specified in the format 10m, 45s etc.  The bot
+  will not hush for more than 1 hour.
+
+%end
+#################################################################
+%subject unhush
+Usage: unhush <channel>
+
+  Use this command to make the bot resume normal operations after
+  it has been asked to hush.
+
+%end
+#################################################################
+%subject backup
+Usage: backup
+
+  Use this command to write backup files of the userlist,
+  response file, locations, and banlist.  Files are written
+  regardless of whether to backup files is set in the config
+  file or not.
+
+%end
+#################################################################
+%subject reload
+Usage: reload [file]
+
+  Use this command to reload the userlist, response file,
+  locations, banlist, combos, stats file, or webcatches.
+
+  To load all files, type 'reload all'.
+
+  Be careful!!  Loading a file from disk will wipe out any
+  changes to these lists which have been made in memory.  If
+  someone has poured out their life story to someone via \n
+  Notes, and you reload the userlist before it has written these
+  changes, they will all be wiped out.
+
+%end
+#################################################################
+%subject showbans
+Usage: showbans <chname>
+
+  Use this command to display the bans set on the specified
+  channel.  Note that this command is not the same as 'banlist',
+  which is the command to display which bans the bot is set to
+  enforce.
+
+%end
+#################################################################
+%subject setforward
+Usage: setforward <email address>
+
+  Use this command to have your Notes forwarded automatically.
+  Type 'none' to unset and receive Notes as normal.  With no
+  arguments, your current forwarding address is displayed.
+
+  To forward all the Notes in your mailbox, use the
+  'forwardnotes' command.
+
+  Be careful!!  If your email address is not valid, your Notes
+  will disappear without warning!
+
+%end
+#################################################################
+%subject forwardnotes
+Usage: forwardnotes <email address>
+
+  Use this command to forward all the Notes in your mailbox to
+  the specified email address.
+ 
+  To have your Notes forwarded automatically, use the
+  'setforward' command to set a forwarding email address.
+
+  Be careful!!  If your email address is not valid, your Notes
+  will disappear without warning!
+
+%end
+#################################################################
+%subject forward
+Usage: setforward <email address>
+Usage: forwardnotes <email address>
+
+  With these two commands, you can have your Notes forwarded to
+  an email address.
+
+  Use 'setforward' to have any Notes you receive forwarded to
+  the specified email address.
+
+  Use 'forwardnotes' to forward all the Notes in your mailbox
+  to the specified email address.
+
+  Be careful!!  If your email address is not valid, your Notes
+  will disappear without warning!
+
+%end
+#################################################################
+%subject showevent
+Usage: showevent <#>
+
+  Use this command to display details on the specified Event.
+  Use 'showevents' to display the list of all Events and Event
+  numbers.
+
+%end
+#################################################################
+%subject showevents
+Usage: showevents
+
+  Displays the list of all Events and Event numbers.
+
+%end
+#################################################################
+%subject addevent
+Usage: addevent <name>
+
+  Use this command to setup a new Event in the Event list.  The
+  name of the Event can by any number of words which describe it.
+
+  Once you have created the Event, you can use the following
+  commands to add or change Event info:
+
+      seteventname  <#> <name>
+      seteventplace <#> <place>
+      seteventabout <#> <about>
+      seteventadmin <#> <admin>
+      seteventdates <#> <dates>
+
+  The '#' argument is the Event number, which is displayed from
+  the 'showevents' listing.  This number will always be used to
+  reference the Event.
+
+%end
+#################################################################
+%subject delevent
+Usage: delevent <#>
+
+  Use this command to delete an entire Event.  The list of
+  attendees who have signed up will be lost.
+
+%end
+#################################################################
+%subject seteventname
+Usage: seteventname <#> <name>
+
+  Use this command to set the name of an Event.  Use 'showevents'
+  to see Event numbers.  Specify 'none' to clear it.
+
+  This is the same name that was given to the Event when the
+  command 'addevevent' was used to create it.  This command is
+  mainly useful for changing Event names later.
+
+%end
+#################################################################
+%subject seteventplace
+Usage: seteventplace <#> <place>
+
+  Use this command to set the place of an Event.  Type
+  'showevents' to see Event numbers.  Specify 'none' to clear it.
+
+%end
+#################################################################
+%subject seteventdates
+Usage: seteventdates <#> <dates>
+
+  Use this command to set the dates of an Event.  Type
+  'showevents' to see Event numbers.  Specify 'none' to clear it.
+
+%end
+#################################################################
+%subject seteventabout
+Usage: seteventabout <#> <about info>
+
+  Use this command to set the about info of an Event.  Type
+  'showevents' to see Event numbers.  Specify 'none' to clear it.
+
+%end
+#################################################################
+%subject seteventadmin
+Usage: seteventadmin <#> <admin>
+
+  Use this command to set the admin of an Event.  Type
+  'showevents' to see Event numbers.  Specify 'none' to clear it.
+
+%end
+#################################################################
+%subject attendevent
+Usage: attendevent <#>
+
+  Use this command to sign yourself up for an Event.  Use
+  'showevents' to see all Events and Event numbers.
+
+  When you sign up for an Event, you are automatically subscribed
+  to the Event Note list for that Event (like a mailing list).
+  On it, you can send messages to other by attendees using the
+  'eventnote' command.
+
+  Once you have signed up, you can specify the dates for which
+  you plan to be at the Event, and information on how you can
+  be reached while you are there.  Use the 'seteventwhen' and
+  'seteventcontact' commands to set these.
+
+%end
+#################################################################
+%subject unattendevent
+Usage: unattendevent <#>
+
+  Use this command to remove yourself from an Event.
+
+%end
+#################################################################
+%subject seteventwhen
+Usage: seteventwhen <#> <when>
+
+  Use this command to set the dates for which you'll be at an
+  Event.  Type 'showevents' to see Event numbers.  Specify 'none'
+  to clear it.
+
+  Note: If you're trying to change the dates for the Event
+  itself, use the 'seteventdates' command...
+
+%end
+#################################################################
+%subject seteventcontact
+Usage: seteventcontact <#> <contact>
+
+  Use this command to set how you can be contacted while at an
+  Event or for other misc info.  Type 'showevents' to see Event
+  numbers.  Specify 'none' to clear it.
+
+%end
+#################################################################
+%subject eventnote
+Usage: eventnote <#> <message...>
+
+  Use this command to send a message to all other Event attendees
+  for this Event.  You must be signed up for the Event in
+  question in order to use this command.
+
+  Sorry, I'm not done with this command yet! :>
+
+%end
+#################################################################
+%subject event
+
+  The Event List stores upcoming events that users on the channel
+  may be attending, and gives those users a way of letting others
+  know who will be attending, and when, and how to get a hold of
+  them while they are there.
+
+  Use the commands 'showevents' and 'attendevent' to display a
+  listing of events and to sign up.
+
+  When you sign up for an Event, you are automatically subscribed
+  to the Event's Note list for that Event (like a mailing list).
+  On it, you can send messages to other attendees using the
+  'eventnote' command.
+
+  You can use the commands 'seteventwhen' and 'seteventcontact' 
+  to provide information about when you will be at the Event,
+  and where you can be reached while there.  To remove yourself
+  from an Event, use the 'unattendevent' command.
+
+%end
+#################################################################
+%subject events
+
+  The Event List stores upcoming events that users on the channel
+  may be attending, and gives those users a way of letting others
+  know who will be attending, and when, and how to get a hold of
+  them while they are there.
+
+  Use the commands 'showevents' and 'attendevent' to display a
+  listing of events and to sign up.
+
+  When you sign up for an Event, you are automatically subscribed
+  to the Event's Note list for that Event (like a mailing list).
+  On it, you can send messages to other attendees using the
+  'eventnote' command.
+
+  You can use the commands 'seteventwhen' and 'seteventcontact' 
+  to provide information about when you will be at the Event,
+  and where you can be reached while there.  To remove yourself
+  from an Event, use the 'unattendevent' command.
+
+%end
+#################################################################
+%subject setbday
+Usage: setbday < mm/dd/yy | mm/dd >
+
+  Use this command to set or change your birthday, which is shown
+  in your 'finger' display, or from the 'showbdays' command.
+
+  Use 'none' to clear it.
+
+  To see who's birthdays are occurring in a given month, use the
+  command 'showbdays'.
+
+%end
+#################################################################
+%subject showbday
+Usage: showbday [month | all]
+
+  With no arguments, this command display all months and the
+  number of birthdays occurring in each month.
+
+  To set your own birthday, use the command 'setbday'.
+
+  To see who's birthdays are occurring in a given month, use this
+  command with a month or month number as the argument.  You can
+  also specify '*' or 'all' to see all birthdays set.
+
+%end
+#################################################################
+%subject showbdays
+Usage: showbdays [month | all]
+
+  With no arguments, this command display all months and the
+  number of birthdays occurring in each month.
+
+  To set your own birthday, use the command 'setbday'.
+
+  To see who's birthdays are occurring in a given month, use this
+  command with a month or month number as the argument.  You can
+  also specify '*' or 'all' to see all birthdays set.
+
+%end
+#################################################################
+%subject bday
+Usage: bday <nick>
+
+  Use this command to see the birthday for the given nick.
+
+  To set your own birthday, use the command 'setbday'.
+
+  To see who's birthdays are occurring in a given month, use the
+  command 'showbdays'.
+
+%end
+#################################################################
+%subject showhistory
+Usage: showhistory <nick>
+
+  Use this command to see a user's account history.  An account
+  history is comprised of things like a user mode change, the
+  account being created, or a master manually adding an entry.
+
+  To add an entry, use the 'addhistory' command.
+
+%end
+#################################################################
+%subject addhistory
+Usage: addhistory <nick> <entry...>
+
+  Use this command to add an entry to a user's account history.
+  This is useful to remind yourself of user activity, or to
+  provide info to other masters.
+
+%end
+#################################################################
+%subject delhostmask
+Usage: delhostmask <nick> <hostmask>
+
+  Use this command to delete a hostmask from your account.
+  Hostmasks allow the bot to track your online usage, and to
+  deterine whether or not you should be greeted, if you have +g.
+
+  Type 'whois <nick>', where nick is your nick, to see the
+  hostmasks listed for your account.
+
+  For example, if a line from your whois entry read
+
+    steve    steve@*.somemachine.org
+
+  you would delete it by typing
+
+    delhostmask steve steve@*.somemachine.org
+
+  Currently, there is no support for adding hostmasks manually.
+  Hostmasks are added to your account when you send your
+  password using the pass command.
+
+%end

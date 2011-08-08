@@ -1,0 +1,533 @@
+# v1.0.17 (!! Do not remove this line !!)
+#******************************************************************************
+# Steve Rider - stever@area23.org
+# Grufti - an interactive, service-oriented bot for IRC 
+# 
+# config - configuration file
+#
+#******************************************************************************
+# The following identifiers are used to configure the bot
+#   set, channel, server, logfile, command, response
+
+
+###########################################################################
+# Identity
+###########################################################################
+
+# Bot identity (these are mandatory)
+set nick ""
+set username ""
+set realname ""
+
+# The bot will also respond to these names on the channel
+set alt-name1 ""
+set alt-name2 ""
+
+# Contact and homepage info
+set maintainer ""
+set homepage ""
+
+# Virtual hosting.  The name must be registered to the domain the bot is
+# running from, or else it will be ignored.  This is not the same as SPOOFING.
+set virtual-hostname ""
+
+# Set this ONLY if you are getting "Can't determine hostname" errors
+set hostname ""
+
+# Change if you want to make your bot harder to detect
+set ctcp-version "Grufti1.0!"
+set ctcp-finger "Control characters turn me on."
+set ctcp-clientinfo "ACCEPT ACTION CLIENTINFO DCC ECHO FINGER PING RESUME SOUND TIME USERINFO VERSION"
+
+# To IRC or not to IRC?  (we still listen on telnet port if irc is OFF)
+set irc 1
+
+
+
+###########################################################################
+# Files and locations
+###########################################################################
+
+# Directories (all directories must be VALID before running bot)
+set tmpdir          "/tmp"
+set botdir          "bot"
+set admindir        "etc"
+set logdir          "logs"
+set backupdir       "backup"
+set xfer-incoming   "incoming"
+set xfer-files      "files"
+
+# Bot files (located in 'botdir' and 'backupdir')
+# Note that if you change any of the botfiles or etcfiles, the install
+# script will no longer be able to detect existing bot and etc files
+# when you upgrade...
+set userfile        "userlist"
+set responsefile    "response"
+set combofile       "combos"
+set locationfile    "locations"
+set webcatchfile    "webcatches"
+set statsfile       "stats"
+set banlist         "banlist"
+set eventfile       "events"
+
+# Admin files (located in 'admindir')
+set helpfile        "help"
+set motd-dcc        "motd"
+set motd-telnet     "motd"
+set welcome-dcc     "welcome"
+set telnet-banner   "banner"
+
+# Process ID file (located in bot main dir)
+set pidfile         "grufti.pid"
+
+# How often to write the bot files? (in seconds)
+set write-freq 1800
+
+# Bot files are written to a .tmp file, then copied.  Keep the .tmp file?
+set keep-tmpfiles 0
+
+# Write a backup copy of the userlist every midnight?
+set backup-userlist 1
+
+# Write a backup copy of the responses every midnight?
+set backup-response 1
+
+# Write a backup copy of the locations list every midnight?
+set backup-locations 1
+
+# Write a backup copy of the banlist every midnight?
+set backup-banlist 1
+
+# Write a backup copy of the eventsfile every midnight?
+set backup-events 1
+
+
+
+###########################################################################
+# Logs
+###########################################################################
+# Usage: logfile <filename> <days> <type> [channel]
+#    Filenames must be enclosed in quotes.  For public logs, specify the
+#    channel which you want to log.  Log files are located in 'logdir'.
+#    The days setting lets you decide how many days worth of logs 
+#    should be stored.  If days is 0, logs will be stored indefinitely.
+#
+#    Log types are:
+#          raw     r      All server and DCC input/output.  (Big file)
+#          main    m      Main status and bot info.
+#          cmd     c      Commands, connections, etc.
+#          error   e      Errors.  Internal, config file...
+#          public  p      Public channel stuff.  Specify [channel]
+#          debug   d      Debug messages
+
+# Log file	File name	Days Log type
+logfile     "error.log"	   1 e
+logfile     "main.log"	   1 me
+logfile     "cmd.log"      1 ce
+logfile     "log.all"      1 mce
+logfile     "chanA.log"    1 pe #chanA
+logfile     "chanB.log"    1 pe #chanB
+
+
+
+###########################################################################
+# Channels
+###########################################################################
+# Usage: channel <add> <chname>
+#        channel <set> <chname> <param> <value>
+#
+#   Parameters are: topic, key, limit, mode
+#
+# Channel modes can also be enforced.  It is not usually encouraged, but
+# for certain types of channels it can be a very useful feature.  To
+# enforce a channel mode, prepend the parameters above with "force-".  For
+# example, to force a topic, use 'force-topic' in place of 'topic'.
+#
+# If you have a channel key, setting 'show-key' determines whether or not
+# the key can be seen in the channel listing.
+
+# Channel list
+channel add #grufti
+
+# For example:
+#channel add #mychannel
+#channel set #mychannel force-topic "Welcome to my channel!"
+#channel set #mychannel key "foobar"
+#channel set #mychannel force-limit 23
+#channel set #mychannel mode "+nst-m"
+#channel set #mychannel show-key 0
+
+# If a protected user (+f, +p, +m, +3) is banned, unban them automatically?
+set unban-protected-users 1
+
+# Kick the user who did the banning? (if they're not +b, +o, +t, +f, +p, +m, +3)
+set kick-those-who-ban-prot 1
+
+# Message to display when user matches shitlist and is kickbanned.
+set shitlist-message "You're not wanted here!"
+
+# Enable idle kicking?
+set kick-channel-idlers 0
+
+# How long until a user is considered idle?  (in seconds)
+set idle-time 7200
+
+# How often to check for idle users (only 1 user is kicked per check so that
+# we don't look like we're mass kicking)
+set idlekick-timeout 60
+
+# Kick idle users even if they have +o on the bot? (+m and +b are never kicked)
+set kick-idle-opers 1
+
+# Auto-detect channel takeovers?  (sensed when bot can't join channel)
+set auto-detect-takeover 1
+
+# Takeover message sent to users when they join IRC when takeover is detected
+set takeover-in-progress-msg "Takeover on #DORK, join #LAME"
+
+
+
+###########################################################################
+# Servers
+###########################################################################
+# Usage: server <servername> [port]
+#    If no port is specified, the default port 6667 is used.
+
+# Server list
+server irc.frontiernet.net 6666
+server irc.nwlink.com 6666
+server irc.prison.net 6666
+
+# Jump if # servers visible falls below this number.  (Use 0 to turn off)
+set min-servers 10
+
+# Mode to set myself when I first join IRC (not checked for invalid modes)
+set mymode-on-IRC-join "+i-ws"
+
+
+
+###########################################################################
+# Command Function Level Redefinitions
+###########################################################################
+# Usage: command <command name> <required levels>
+#    Use this command to override the default levels required for commands.
+#
+#    Command names must be enclosed in quotes.  Levels required are in
+#    the form xxx, where 'x' is a single level.  It cannot contain spaces.
+#
+#    Multiple levels are OR evaluated, and +m can always do any command.
+#    The following are just a few commands you may want to redefine.  You
+#    can redefine any command.  Look at 'cmdinfo -l' to see all the
+#    commands and their current values.
+
+#           Command     Required levels
+command     "who"       -
+command     "topic"     t3
+command     "kick"      t
+command     "ban"       t
+command     "kickban"   t
+command     "jump"      t
+command     "invite"    o
+command     "leave"     t
+command     "join"      t
+command     "hush"      t
+command     "unhush"    t
+
+
+
+###########################################################################
+# Response object definitions
+###########################################################################
+# Usage: responsetype <response name> <levels reqd> <match list>
+#    Setting up your own response types allows for a very flexible
+#    response matching system.  With it you can setup types of reponses
+#    in which many responses will be used with it.  Some ideas are response
+#    types such as "tell me" for which all the entries under that response
+#    could be things the bot could "tell you".  (ie. "grufti, tell me the
+#    airspeed of an unladen swallow...")
+#
+#    Responses are classified under two main types: private and public
+#      - Private responses are evaluated only when the message contains the
+#        bot's nick, or any of the alternate nicks.
+#      - Public responses are evaluated for every message.
+#
+#    Since public responses match any message, make sure you list the
+#    private responses first.  The match character "*" is used to match
+#    all messages.
+#
+#    The levels +l and +L allow users to create and delete responses.  These
+#    levels can be divided between response types, so that for example,
+#    users with +L could be allowed to modify all response types, and users
+#    with +l may only have access to the lyrics types.
+#
+#    Finally, to have types match more than one set of matches, just create
+#    a new entry with the same name.  The matches will evaluate on an AND
+#    basis just like individual responses.
+#
+
+# Private responses	Name		Level	Matches
+response-private    "internal"  L       "internal"
+response-private    "lyrics"    Ll      "sing"
+response-private    "url"       Ll      "webpage, web page, web pages"
+response-private    "private"   L       *
+
+# Public responses	Name        Level	Matches
+response-public     "public"    L       *
+
+
+
+###########################################################################
+# Internal Response matching
+###########################################################################
+
+# Respond when users query the bot with 'have you seen <nick>'?
+set respond-to-haveyouseen 1
+
+# Respond when users query the bot with 'url <nick>'?
+set respond-to-url 1
+
+# Respond when users query the bot with 'bday <nick>'?
+set respond-to-bday 1
+
+# Respond when users query the bot with 'showbdays'?
+set respond-to-showbdays 1
+
+# Respond when users query the bot with 'email <nick>'?
+set respond-to-email 1
+
+# Respond when users query the bot with 'stat <type>'?
+set respond-to-stat 1
+
+
+
+###########################################################################
+# DCC config
+###########################################################################
+
+# Requested telnet port (allows users to telnet to the bot)
+set telnet-port 9000
+
+# Requested gateway port (used for gateway and web clients)
+set gateway-port 8888
+
+# Exit if we can't get the requested telnet and gateway ports?
+set quit-port-request-failed 1
+
+# Allow DCC SEND requests? (allow people to send files to the bot)
+set allow-dcc-send 1
+
+# Show gateway port numbers in dccinfo?
+set show-internal-ports 1
+
+# Chat port (for sending DCC CHAT requests)
+set chat-port 7000
+
+# Require a DCC connection to use 'pass' command?
+set require-dcc-for-pass-command 1
+
+# How long (in seconds) until a pending command is considered invalid?
+set pending-command-timeout 30
+
+# How many login attempts before disconnecting user?
+set login-attempts 3
+
+# Remove incomplete xfers if we get EOF?
+set xfer-remove-incomplete 1
+
+# Show motd on dcc chat? (for registered users)
+set show-motd-on-dcc-chat 1
+
+# Show motd on telnet login? (shown after user logs in)
+set show-motd-on-telnet 1
+
+# Show motd only when it has changed?
+set show-motd-onlywhenchanged 1
+
+# Display banner on telnet connection? (shown before login: prompt)
+set show-telnet-banner 1
+
+# Show welcome message on dcc chat for non-registered users?
+set welcome-newdcc 1
+
+# How many DCC connections are allowed?
+set max-dcc-connections 50
+
+# SMTP gateway to use?  (we'll use bot hostname if left blank)
+set smtp-gateway ""
+
+# How often to send queued Notes?
+set dequeuenotes-freq 120
+
+
+
+
+###########################################################################
+# Grufti Notices (sent to users with +n)
+###########################################################################
+
+# Send a nightly report summarizing bot statistics for the day?
+set send-notice-nightly-report 1
+
+# Send a Notice whenever the bot receives a DIE request via DCC?
+set send-notice-die 1
+
+# Send a Notice whenever a user is given a new level?
+set send-notice-level-plus 1
+
+# Send a Notice whenever a user has a level taken away?
+set send-notice-level-minus 1
+
+# Send a Notice whenever a file is received via DCC?
+set send-notice-DCC-receive 1
+
+# Send a Notice whenever a new user registers?
+set send-notice-user-created 1
+
+# Send a Notice whenever a user is deleted?
+set send-notice-user-deleted 1
+
+# Send a Notice whenever a location is created?
+set send-notice-location-created 1
+
+# Send a Notice whenever a location is deleted?
+set send-notice-location-deleted 1
+
+# Send a Notice whenever a response is created?
+set send-notice-response-created 1
+
+# Send a Notice whenever a response is deleted?
+set send-notice-response-deleted 1
+
+# Send a Notice whenever an event is created?
+set send-notice-event-created 1
+
+# Send a Notice whenever an event is deleted?
+set send-notice-event-deleted 1
+
+
+
+###########################################################################
+# Flood control, timeouts, and misc settings
+###########################################################################
+
+# How many msgs constitutes a public flood?
+set public-flood-num 8
+
+# in how many seconds?
+set public-flood-interval 60
+
+# once flooded, how long until we continue normal operations
+set public-flood-timeout 60
+
+# How long to wait before deleting users if no activity?  (in days)
+set timeout-users 90
+
+# How long to wait before deleting hostmasks if no activity?  (in days)
+set timeout-accounts 30
+
+# How long to wait before deleting Notes if not saved?  (in days)
+set timeout-notes 30
+
+# How long to wait before deleting Notices if not saved?  (in days)
+set timeout-notices 7
+
+# How long until a location cannot be changed by the user who set it?
+set location-changetime 600
+
+# Notify users when they signon that they have new Notes?
+set notify-of-notes-on-signon 1
+
+# How long to wait after user has left channel before greeting again?
+set wait-to-greet 300
+
+# How long to wait after user has left IRC before informing of Notes again?
+set wait-to-informofnotes 600
+
+# How long to wait before closing connection if our CHAT request isn't answered?
+set establish-dcc-timeout 180
+
+# How long to wait before closing connection to telnet if no login?
+set chat-login-timeout 180
+
+# How long to wait before giving up on ident check?
+set chat-ident-timeout 10
+
+# How long to wait before closing connection if no activity over DCC?
+set chat-timeout 14400
+
+# How long to wait before closing an SMTP client if no activity?
+set smtp-timeout 180
+
+# How long to wait during a connect?
+set server-timeout 30
+
+# How long to wait if a pong is not received before jumping?
+set server-ping-timeout 180
+
+# How long to wait before disconnecting server if our QUIT hasn't happened?
+set server-quit-timeout 20
+
+# How long to wait between each USERHOST? (to determine who's on IRC)
+set radiate-freq 300
+
+# How long to wait before clearing cache if no 302 has been received?
+set radiate-timeout 600
+
+# How long to wait between each PING? (to determine if we're lagging)
+set ping-freq 60
+
+# How long to wait between each LUSER? (to determine # of servers visible)
+set luser-freq 300
+
+# How long to wait before attempting a join if we are banned, invite-only, etc?
+set join-freq 30
+
+# How long to wait before trying to get our original nick?
+set nick-freq 30
+
+# How long to wait before jumping if we're split?
+set netsplit-timeout 180
+
+# How long to wait before letting users get lost in the split?
+set memberissplit-timeout 1200
+
+# How long to wait if we can't connect to any servers before trying again?
+set serverpossible-timeout 120
+
+# How long to wait before rejoining if the bot is asked to leave a channel?
+set default-leave-timeout 300
+
+# Max time to wait before rejoining if the bot is asked to leave a channel?
+set max-leave-timeout 3600
+
+# How long to wait before resuming normal operations if bot is asked to hush?
+set default-hush-timeout 300
+
+# Max time to wait before resuming normal operations if bot is asked to hush?
+set max-hush-timeout 3600
+
+# How many ports to try on chat port? (if 0 the bot can't initiate DCC chats!)
+set num-ports-to-try 1000
+
+# Max filesize allowed for incoming DCC send request (in kb)
+set xfer-maxfilesize 2048
+
+# Max blocksize to send
+set xfer-blocksize 512
+
+# Maximum nicks per user (more than 5 begins to look ugly in 'finger')
+set max-nicks 5
+
+# Maximum number of greets per user
+set max-greets 10
+
+# Max number of Notes that can be saved
+set max-saved-notes 20
+
+# How many URL's to catch before discarding the oldest? (0 to turn off)
+set max-urls 50
+
+# Sing "10:15" by The Cure (you'll need to set your timezone in response.c)
+set sing-1015 0
+
+

@@ -1,0 +1,86 @@
+GruftiStats
+===========
+
+$Id: README,v 1.1 1999/06/06 11:52:49 cphipps Exp $
+
+GruftiStats is a program to read logs from a Grufti bot (an IRC bot by Steve Rider, see ftp://area23.org/pub/Grufti/). It produces a web page, with various statistics and quotes from the channel; the idea was got from the cool MircStats program.
+
+See http://www.daaave.org/~cph/grufti/ for the latest information about GruftiSrats, latest source download, and a link to some sample output.
+
+GruftiStats is written by Andy Kempling (aurikan@hotmail.com) and Colin Phipps (cph@lxdoom.linuxgames.com). GruftiStats is free software, see the file COPYING for information.
+
+Setup
+-----
+
+GruftiStats requires that all logs have the Grufti time stamp, and this requires a small patch to the grufti bot.
+
+*** grufti-1.0.10-original/src/main.c   Mon May  3 12:37:49 1999
+--- grufti-1.0.10/src/main.c    Fri Apr 23 12:34:25 1999
+***************
+*** 616,619 ****
+--- 616,625 ----
+                User_carryoverallactivitytimes();
+                Log_carryoveralllogs();
++               { // cph - date stamp new logs
++                       char started[DATELONGLEN];
++ 
++                       timet_to_date_long(time(NULL), started);
++                       Log_write(LOG_ALL, "*", "## Started: %s", started);
++               }
+  
+                /* Backup userlist */
+
+
+Add this bit of code to main.c, and recompile. This just adds a time stamp to all log files. GruftiStats will work without this, but it will show lots of activity as "Unknown" date.
+
+Also, you need to make sure you are producing the right logs that GruftiStats will use. In the Grufti config.gb file, you want a line like:
+
+logfile	"channel.log" p #mychannel
+
+Once you've done the recompile (if you choose to do that), and have made sure you have the right logging enabled, restart your Grufti.
+
+Next, run 'make' in the gruftistats directory. Copy the GruftiStats binary to wherever you'd like to run it from.
+
+To run gruftistats, you run:
+
+gruftistats [-o outfile] [-r respfile] [filelist ...]
+
+where:
+
+filelist ...
+is a list of grufti log files; you could just specify ~/grufti/logs/channel.log. Personally I have a system set up which sorts my logs for each day and then uasses a list of the last 7 days logs to GruftiStats.
+
+respfile
+is a config file. Blank lines or those starting with a # are comments. A sample config file is included below. Basically this sets your channel name, and some other cosmetics for the output page like colours.
+
+outfile
+is the file to write the html output to (stdout if not given).
+
+Sample config file
+------------------
+
+channame=mychannel
+myname=Grufti
+myemail=cph@lxdoom.linuxgames.com
+page_bg=000000
+page_text=D0D0D0
+page_text_contrast=FFFF40
+date_bg=000060
+table_index_bg=800000
+table_nick_bg=401000
+table_2_bg=303030
+table_3_bg=101040
+table_head_nick=800000
+table_head_other=0x303040
+statwords=lol,heh
+botname=grufti
+botname2=bot
+botname3=gbot
+
+That's all the options, hopefully they're fairly self-explanatory, colours are in RRGGBB hex format like HTML.
+
+Status
+------
+
+Ok it doesn't compile without warnings at the moment, there are a few bugs, once aurikan has finished his latest batch of edits I'll try and fix everything :-).
+

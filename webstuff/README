@@ -1,0 +1,18 @@
+The following files can be used with the web-interface.
+
+gruftiland2.jpg
+  Welcome image used when logging in.  Use as an idea for your own pic.
+
+index.html
+  The main page that allows users to login.  It contains the html to
+  access your gb.cgi.  Note the use of the word 'YOUR'.  This means you
+  MUST edit the index.html file to have it point to your own gb.cgi.
+  If not, you'll be logging into my grufti, and that's probably not what
+  you want.
+
+register.html
+  People who try to login and who aren't registered will be shown a
+  screen which points to this page.  Its purpose is to let people know
+  how they can register with the bot and login.
+                 
+

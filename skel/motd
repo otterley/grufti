@@ -1,0 +1,10 @@
+----------------- G r u f t i ' s   M O T D --------------------
+
+                     This space for rent
+
+Note to bot owners, you must use the 'resetmotd' command each
+time you modify the MOTD so that it will show up again to users
+who have already seen it. (when 'show-motd-onlywhenchanged' is
+set in config.gb)
+
+----------------------------------------------------------------

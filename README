@@ -1,0 +1,680 @@
+Grufti1.0
+
+by Steve Rider - stever@area23.org
+(and many others who continue to provide support and feedback)
+
+Special thanks goes to Andreas Bieri (dre@834.net) and Erin Heinemeyer
+(aerin@gothic.net) for giving me the continued inspiration to keep this
+project going!  Lots of late nights at the Frontier babbling about code
+and ideas have contributed to many of the cool features that you see here.
+Erin came up with the idea of having a bot named Grufti way back in 1993,
+and we've all had a lot of fun with it ever since.
+
+SOURCE
+Source code for Grufti can be found at
+    http://grufti.com
+or
+    ftp grufti.com:/pub/Grufti
+
+
+
+Table of Contents
+-----------------
+ 1. Introduction
+ 2. Documentation
+ 3. Upgrading from a previous version
+ 4. Compiling and installing grufti
+ 5. Summary of features
+ 6. The config.gb configuration file
+ 7. Maintaining your bot
+ 8. Responses
+ 9. Changes
+10. What Next?
+
+
+
+
+1. Introduction
+---------------
+    This directory and its descendants contain the sources for Grufti,
+    a service-oriented bot for the IRC network.  The information here
+    corresponds to version 1.0, the first public release of Grufti.
+
+
+
+2. Documentation
+----------------
+    The best way to get started with Grufti is to become familiar
+    with the directory structure, and the help file found in etc.
+    Every command is documented there as well as major topics like
+    Grufti accounts and how to configure responses.  By browsing
+    through the help file you'll be able to get an idea of the scope
+    of Grufti and what kinds of things are possible.
+
+    This README file will try to explain some of the concepts Grufti
+    relies on, a little more detail on bot organization, and how to
+    compile and how to configure the bot.
+
+
+3. Upgrading from a previous version
+------------------------------------
+    If you are upgrading from a previous version of Grufti, you will
+    need to do the following:
+
+	1) Shut the old bot down
+	2) Type 'make install' from the new bot directory, and specify
+	   the existing bot directory for installation
+	3) Edit the new config.gb file (the old one will be called
+	   config.gb.old)
+
+    Grufti supports an install script, and if the install directory
+    is given as one from a previous version, the script will rename
+    certain files with the .old extension, and will not overwrite
+    your vital bot files.
+
+    Once the compilation and installation has been achieved, you will
+    need to edit config.gb.  Since new changes may have been made to
+    this file, it is to your advantage to start over with this new
+    config.gb while looking at the changes you made in the old one.
+    The old config will have been renamed to config.gb.old.
+
+    At this point, all your bot files should be intact, and the new
+    version will be in place and ready to go.
+
+
+4. Compiling and installing Grufti
+----------------------------------
+    This release contains everything you should need to run a Grufti
+    under most major UNIX's.  It even contains the source code for
+    creating a CGI executable.  This can be triggered from a web
+    page to provide a web-interface for your bot.  Setting it up will
+    require you to edit webconfig.h.  With web access enabled, users
+    can edit responses, send, manage, and read Notes, check who's on
+    any of the botted channels, view info on other Grufti users, setup
+    their Grufti account, and more.  It's cool, try it.
+
+    1) To run through the entire installation including machine
+       configuration, compilation, and installation, type
+
+           make install
+
+       This will perform all 3 steps needed in a complete installation.
+       If you want a little more control, or are planning on editing
+       the Makefile before compiling, use "make config" to configure the
+       bot, "make" to compile the source code and finally "make install"
+       to install all components and create the necessary bot structure.
+    
+       If all goes well, the bot will have been compiled and the install
+       script will have created a directory ready to run your bot.
+
+    2) Change to the new bot directory and see section 6 to find out what
+       you need to do to get your new bot up and running.
+
+    3) If you want to use the CGI for web page access, you will need to
+       edit the webconfig.h file to establish the appropriate settings.
+
+    4) Build and install the cgi by typing
+
+           make install-cgi
+
+       This will compile the CGI and install it to the directory specified.
+
+       NOTE: If you make any changes to webconfig.h, you will need to
+       recompile and reinstall both the main bot and the CGI.
+
+    5) To save space, you can type
+
+           make clean
+
+       to remove intermediate object files and executables.
+      
+
+    Skip the next part if you are not interested in compiling optional
+    modules into the bot.
+
+    A DEFINES line is provided in the Makefile to control what is
+    compiled into the bot.  The DEFINES values currently supported are
+
+	-DWEB_MODULE
+	-DRAW_LOGGING
+
+    The define -DWEB_MODULE is defined by default.  If you know that
+    you will not be using the web area, you can undefine this to save
+    some space.  If you define or undefine anything in the Makefile, be
+    sure to do "make clean", then "make" again.
+
+    Specify -DRAW_LOGGING if you plan on logging raw server and DCC
+    interaction.  Most likely you won't need this, and #define'ing
+    it out helps a little on overhead.
+
+    Troubleshooting:  If you CAN'T get the bot to compile, I can try
+    and provide some help, although I don't have access to TOO many
+    types of machines.  Just give me a detailed listing of the errors
+    you encountered during the compile, and what OS and machine type
+    you're using.  Most likely the errors will be in the configure
+    script not operating properly (I *still* can't get configure to
+    recognize gcc on bloody IRIX systems), or the source not using
+    the config.h settings in the proper way.
+
+
+5. Summary of features
+----------------------
+    The design goals that went into Grufti were that it use little
+    CPU overhead, be highly usable, highly customizable, and provide
+    a really nice looking user-interface.  A lot of time was invested
+    in making the bot as easy to use by normal IRC users as possible.
+    It's really like a BBS and provide services more for the channel
+    regulars than to maintain channel integrity like modes and such.
+    Priority was really given to implementing as many useful features
+    as possible but keeping it simple and easy to use.
+
+    Here are a few of the design points of interest:
+
+    Object-oriented design and data abstraction:
+        Even though the code is still in c for portability reasons,
+        a lot can be borrowed from c++ and its idea of objects.
+        In Grufti 1.0, major components exist as objects such
+        as Grufti, Server, Channel, Response, DCC, User, Command,
+        and Codes.  These objects know about the data they hold, and
+        can make educated decisions depending on different states
+        of the system.  One object may query the Server object,
+        for example, to determine how the bot is connected, what
+        state the connection is in, etc.
+
+    Better searching algorithms:
+        Unlike most bots, Grufti stores information on every user
+        it sees across the channel.  This database of users can
+        be large.  Grufti sees about 5,000 unique people per month
+        on his current channel.  Grufti 1.0 uses techniques like
+        move-to-front algorithms to decrease run times for searching
+        the lists.  A good deal of cross-referencing is used which
+        allow routines to find the information from the database
+        directly, instead of resorting to expensive database lookups.
+
+    Statistics:
+        Grufti 1.0 is designed from the ground up to keep track of
+        lots of neat information about channel and server usage,
+        and users.  Average channel size, user usage time, top usage
+        can all be monitored.  A nightly report of daily statistics
+        can be configured and sent to bot owners via Grufti Notices.
+
+    Better use of account identity:
+        Instead of users existing as ever-changing hostmasks, users
+        exist as 'accounts' on Grufti.  IRC nicks can be added and
+        deleted from the account and personal information can be set.
+        'Noteboxes' are central to an account, and users exist as
+        one entity so that if you are on IRC and have been informed
+        of new Notes, you will not be informed again if you connect
+        with one of your other nicks.
+
+    Notes:
+        One of the prime features of Grufti is the ability to send
+        and receive Notes from other IRC users.  Since Grufti
+        accounts are setup in such a way that one user can have
+        many alternate nicks, sending a quick Note to a user is
+        just a matter of remembering any nick which belongs to
+        their account.  The Note 'read' and 'send' commands have
+        been designed to make them simple to use.  Many Grufti
+        users rely on them, and find themselves checking their
+        Grufti Notes as often as they check their email.  With the
+        latest release, users can have their Notes forwarded to
+        an email address automatically!  See help on 'setforward'
+
+    Customizable account information:
+        Users with Grufti accounts can set a lot of personal
+        information which can be viewed by other IRC users.
+        This information includes email address, web address,
+        location, finger info, plan info, and the nicks which they
+        are known by on IRC.  There are also 10 other slots, which
+        can contain information of any type.  Some people use them
+        to display favorite music, hobbies, phone and pager numbers,
+        and other unique, interesting things.  The location field
+        is unique in that it allows users to use a command to view
+        all the users who live in a certain region, like Germany,
+        or the SF bay area.
+
+    Secure method of password and verification:
+        Grufti1.0 keeps track of verification in the DCC records.
+        If the identification occurs via DCC, the session is
+        considered 'secure' and a password will not have to
+        be sent again until the DCC connection is disconnected.
+        Grufti also requires passwords to gain access to accounts,
+        and for receiving ops by the bot.  This greatly improves
+        security compared with the traditional method of verifying
+        users by hostmask.
+
+    Tracking of users via USERHOST:
+        This allows Grufti to watch users on IRC, not just on
+        the channel.  Users can then be informed of new Notes
+        when joining IRC.  The 'seen' command also makes use of
+        this feature by indicating if the user can be found on
+        IRC somewhere.  The 'finger' command also makes use of
+        this feature by displaying a list of users known to the bot
+        that are currently online or connected via DCC or telnet,
+        in much the same was as the unix 'finger' command.
+
+    Programmable response matching:
+        Configuring a bot to say certain things on a channel
+        defines its personality, and can make the bot a lot more
+        fun to have around. A well-configured personality can make
+        the bot enjoyable for years.  The Grufti which sparked all
+        of this has been around since 1993, and is well-known for
+        his fun-loving personality!  Grufti 1.0 allows responses
+        to be matched using fall-through AND/OR logic, and allows
+        for response exceptions, so that by specifying an except
+        line of "this mortal coil" in the Coil response won't match
+        Coil when someone asks the bot to sing This Mortal Coil.
+        All this provides a powerful way to program responses.
+        I have been amused more than once watching new people to the
+        channel carry on a small discussion with the bot thinking
+        it was a real person.  Responses can also be programmed on
+        the fly, and levels can be given to users which allow them
+        to program responses into the bot as well.
+
+    These are just a few of the main features.  I think you'll
+    be pleased with all the little frills which have been added.
+    This bot is designed to be useful, easy to use, look nice, and
+    not be a nuisance, and I think it lives up!
+
+
+6. The config.gb configuration file
+-----------------------------------
+    At this point, your bot is probably compiled and waiting, and
+    you're wondering what to do next.
+
+    Overrall bot configuration is done using the config.gb file.
+    (If you don't like the name of this file, you can change it in
+    grufti.h)  This is where you will setup your bot's nick, the
+    channels it will reside on, file locations, the servers it will
+    use, and the many variables you can tweak to make the bot work
+    exactly the way you want.
+
+    The config file is organized into the following main areas:
+
+	Bot identity
+	Files and Locations
+	Logs
+	Channels
+	Servers
+	Command level redefinitions
+	Response types
+
+    The nick, username, and realname entries in the 'Bot identity'
+    area MUST be set.  Everything else past that is optional, however,
+    you probably don't want the bot sitting on #grufti for the rest
+    of its life.
+
+    Go through the config file, and edit the appropriate lines as
+    necessary.  Config lines should be self-explanatory.  As you
+    learn more about the bot, you will understand more of what some
+    of the configurations do.  But for now, the parts you will need
+    to focus on are in Channels, Servers, and Logs.
+
+    In the Channels area is where you will set up the channels on
+    which your bot will reside.  You can have the bot enforce channel
+    modes on your channel, specify what the channel topic should be,
+    and whether it should be enforced or not.  Notice that even though
+    the modes +k and +l (key and limit) are considered 'modes' on IRC,
+    Grufti treats them separately since they have arguments.  As a
+    result, if you try to specify +k and +l in the 'mode' setting,
+    they will be ignored.  Use the 'key' and 'limit' settings to
+    configure keys and limits.  Look at the examples for #mychannel
+    to see how channel modes can be set.  Specifying 'force-' in
+    front of any mode causes that mode to be enforced.
+
+    The Servers area is next, and you should set up your servers
+    of preference.  (Or any servers that will actually allow you
+    and your bot).  The servers will be loaded in the order they are
+    listed in the configfile, so you should put the primary servers
+    first in the list.  While the bot is running, you will use the
+    'jump' command to jump between the servers in the list.
+
+    Finally, the Logs area, which is located before the Channels area
+    (we need to setup the logs as fast as possible so we know where
+    to log config errors) should be configured.  The public logs for
+    #chanA and #chanB are given as examples.  You should update them
+    to reflect the channel(s) on which your bot will reside.
+
+
+7. Maintaining your bot
+-----------------------
+    So you've got your bot up and running, and you want to know what
+    all you can do with this thing.
+
+    Running the bot for the first time with no userlist will prompt you
+    to enter the username and password for your account.  After this,
+    the bot will go into the background and you will find him waiting
+    on the channel(s) specified in the config.gb file.  If you haven't
+    configured the telnet port to something else, you can interact
+    with the bot via telnet by telneting to the bot's hostname at
+    port 9000.  (telnet hostname 9000)  This is the preferred way of
+    doing a lot of interaction with the bot.  You should also check out
+    the gb_cmd.zip file, found in the files directory.  It contains
+    gb.c, which can be compiled to give you an executable that will
+    interact directly with the running bot from the UNIX command line.
+    This is very handy for doing bot interaction as well.  This file
+    must be edited to provide an interface for your bot.  Once you
+    edit gb.c, your users will be able to download it from the files
+    directory with the command 'send', and it will allow them to access
+    your bot.  Right now its setup to access a nonexisting bot, and you
+    will probably get the error "pipe broken" when trying to run it.
+
+    This version of Grufti uses the \n translation modifier in the
+    help file which translates to the bot's nick, so it should be
+    general enough for your bot.  You should still run through it and
+    update any web pages, etc specific to your bot.  Remember, this
+    is your bot, so you can have the help file say anything you want!
+    If you don't like the main help screen, change it!
+
+    The following topics will help you in getting started.  Help can
+    be found on any command listed here by typing 'help <command>'.
+
+    Adding users and levels:
+        Users can be added to the bot in 2 ways.  Either you can
+        wait for the user to register him or herself with the bot,
+        or you can add them with the 'adduser' command.  Either way,
+        you can only setup levels for users who have accounts on the
+        bot.  To view account information, use the 'finger' command.
+        More help is available on account personalization by typing
+        'help account'.  Users can get information on registering
+        by simply DCC chatting the bot.  (If the bot seems to be
+        ignoring DCC chat requests, tell folks to try /msg <yourbot>
+        chat.  If the client is behind a firewall, they will not
+        be able to initiate DCC chats, but then can accept them.
+        This command will have your bot send them a DCC chat request.
+
+        You will want to do 'help levels' to see all the levels a
+        user can possibly have.  Notice that your account is given
+        the +m level, for master.  Adding and removing levels is
+        accomplished with the 'mode' command.  You will become very
+        familiar with it.
+
+        The level +b should be given to any other bots on the
+        channel, including yours.  It keeps bots from getting in
+        bot wars by not taking action against things bots do on
+        the channel.
+
+        The level +o allows users to get ops on the channel by using
+        the 'op' command, or whenever they use the 'pass' command.
+
+        The level +g has the bot greet the user whenever they join
+        the channel.  Users can set their own greetings with the
+        'addgreet' and 'delgreet' commands.  Greets can be displayed
+        with 'showgreets'.
+
+        The level +f and +p are self-explanatory.  The level +l
+        allows users to program responses directly into the bot.
+        Only give people you trust this level!  Bot personality is
+        a delicate thing.
+
+        The level +3 is not really yet defined.  It's more of a
+        status symbol which can be used for mark long-time users
+        and those with high standings on the channel.
+
+        The level +t is for trusted users which are allowed
+        to do things like have the bot jump servers, leave and
+        rejoin the channel, hush, etc.  Users with +t are general
+        administrators, but who probably don't have access to the
+        machine on which the bot runs.
+
+        The level +m specifies the user is a master.  Users with
+        +m can do any command regardless of the levels required.
+        Generally, users besides you who have +m are those who have
+        direct access to the machine on which the bot is running.
+        They'll be the people who check to make sure the bot is
+        running and if not can restart him, etc.
+
+        Finally, the level +n allows users with that level to receive
+        Grufti Notices whenever certain things happen with the bot.
+        You should probably give yourself this level along with
+        other +m users who are actively administrating the bot,
+        since it will let you and them know what is going on with
+        your bot at all times.  One of the Notices it sends is
+        whenever a user registers with the bot.  There is an area
+        of config.gb which deals with Grufti Notices, and you can
+        setup which events trigger or don't trigger a Notice.
+
+        The best way to get started is to have as many users register
+        themselves with the bot right away, giving them levels as
+        they register.
+
+    Overriding command level requirements:
+        To change the levels required for any command, edit the
+        config.gb file and look under the section "Command Function
+        Level Redefinitions".  The commands currently listed are
+        only a few of the commands which can be reconfigured.
+        Any Grufti command can be overridden simply by specifying
+        the name of the command and the new levels it will require.
+        You will need to shut down and restart the bot for any
+        changes made to have effect.  Eventually I'll have a 'rehash'
+        command which will do just that.
+
+    Monitoring logs:
+        If you haven't become familiar with the logs in the
+        logs directory, you should do so.  This is where all
+        the logs you specified in the config file are written.
+        You will find a lot of useful information in these logs,
+        like why servers aren't connecting, any errors detected
+        in the config.gb file, etc.  It is a good idea to check
+        these logs every so often to make sure that everything is
+        running as expected, especially the error log.  I give each
+        one a quick run-through every day to look for anything out
+        of the ordinary.  Also, in the (hopefully) unlikely event
+        that the bot CRASHES, you can find the line # and file the
+        bot crashed at, information I'd be interested in knowing.
+
+        A handy unix utility for monitoring logs is the 'tail'
+        command.  Use it in the form
+
+            tail -f <logfile>
+
+        to watch the latest changes to the file be written directly
+        to your screen.
+
+        Another way to monitor logs is by using the 'watchlog'
+        command.
+
+    Shutting things down:
+        The bot is programmed to intercept kill signals, and will
+        shut down when receiving a QUIT, HUP, or TERM.  The normal
+        way of shutting down the bot is to use the 'die' command on
+        the bot, or by running the executable with the switch -k.
+        The switch -k actually sends the kill signal USR1 to the
+        bot.  The bot intercepts it, signs off IRC, writes all its
+        files, and exits gracefully.  This is called a Soft Kill.
+        Notice that if the bot is still waiting to sign off IRC
+        (it could take a while), you can use the -k switch again,
+        which will tell the bot that you don't care if the IRC
+        server has acknowledged its QUIT request, and the bot will
+        write all files and exit immediately.
+    
+        The only difference between the bot receiving a HUP, TERM,
+        or QUIT signal and a USR1 signal is that the bot doesn't
+        sign off IRC with the QUIT signals.  The connection is just
+        closed, and the bot will show a Connection reset by peer,
+        or Read error when this happens instead of signing off with
+        a normal message.  We do this to make sure the bot can get
+        the hell out of there fast and write all of its bot files
+        since a QUIT, HUP, or TERM signal is usually given right
+        before the machine goes down!
+
+        In the unlikely event that you want to have the bot shut down
+        WITHOUT writing the botfiles, you would use the switch -x,
+        called a Hard Kill.  This is not recommended at all.
+
+        So, the typical way to shutdown the bot is by using the -k
+        switch after the executable, or via the 'DIE' command.
+    
+    Setting up the MOTD and the telnet banner:
+        In the etc directory, you will find a file called motd, and
+        one called banner.  These should be customized for your bot.
+
+    Summary of master commands:
+        The following commands are used to keep the bot running
+        smoothly, like adding new servers to the server list,
+        and viewing bot resources.
+
+        watchlog    - Use this command to monitor logs directly from
+                      a DCC chat or telnet connection.
+
+        mode        - Use this command to change levels for a user.
+
+        adduser     - Use this command to add a user to the bot.
+
+        deluser     - Use this command to delete a user from the bot.
+
+        chpass      - Change the password for a user.  Useful when a
+                      user forgets their password.
+
+        leave       - Have the bot leave the channel for a specified
+                      amount of time.  Handy when trying to resynch a
+                      channel.  Note that the bot will automatically
+                      cycle the channel if he finds himself the only
+                      member on the channel and he doesn't have ops.
+
+        join        - Have the bot rejoin a channel he has been asked
+                      to leave.
+
+        hush        - Have the bot 'hush up' on the channel for a
+                      specified amount of time.  Sometimes, a bot can
+                      be annoying if it talks too much.  This is how
+                      you can keep people from getting overly upset :>
+
+        unhush      - Have the bot return to normal operations.
+
+        jump        - Use this command to connect the bot to a
+                      different server in the serverlist.  If no
+                      server is specified, the bot will connect to the
+                      next server in the list.
+
+        addserver   - Add a server to the serverlist.  Note that this
+                      doesn't write it to config.gb.
+
+        delserver   - Delete a server from the serverlist.  Handy for
+                      when a server becomes unreliable, but you don't
+                      want to remove the server permanently.
+
+        servinfo    - Display a listing of all configured servers.
+                      If the -r switch is used disconnect reasons are
+                      displayed.
+
+        configinfo  - Displays the values of all internal variables.
+
+        setvar      - Sets an internal variable.  This is handy again
+                      if you want to change a value temporarily.
+
+        meminfo     - Display the total memory used by the bot.
+
+        cmdinfo     - Dispays all commands and required levels.  The
+                      required levels for any command can be overridden
+                      in config.gb
+                  
+     
+8. Responses
+------------
+    Configuring a bot to say certain things on a channel defines its
+    personality, and can make the bot a lot more fun to have around. A
+    well-configured personality can make the bot enjoyable for years.
+    The Grufti which sparked all of this has been around since 1993,
+    and is well-known for his fun-loving personality!  Grufti 1.0
+    allows responses to be matched using fall-through AND/OR logic,
+    and allows for response exceptions, so that by specifying an
+    except line of "this mortal coil" in the Coil response won't
+    match Coil when someone asks the bot to sing This Mortal Coil.
+    All this provides a powerful way to program responses.  I have been
+    amused more than once watching new people to the channel carry on
+    a small discussion with the bot thinking it was a real person.
+    Responses can also be programmed on the fly, and levels can be
+    given to users which allow them to program responses into the
+    bot as well.
+
+    In the example response file given, there are currently 5
+    predefined response types.  They are:
+
+        internal, lyrics, url, private, and public
+
+    These types were configured in the 'Response Object Definitions'
+    section of the config.gb file.  These types group the responses
+    under similar subjects.  For example, the 'lyrics' type is setup
+    to check all the lyrics responses whenever the word 'sing' and
+    the bot's nick is found in public chatter.  The 'private' type
+    is setup to check all the private responses whenever the bot's
+    nick is found in a message.  The private types are useful when
+    you want the bot to be the subject of a particular message (ie.
+    "hi Grufti!").  The 'public' type on the other hand checks every
+    message regardless of whether the bot's nick is in the message
+    or not.  Be careful which responses you enter under the public
+    type, as all text is checked for matches.  It could get real
+    annoying if an everday word triggers one of your public responses.
+
+    A pretty decent example of configuring responses is given under
+    the help topic 'response'.  As a side note, it will probably
+    be a LOT easier to edit the response file manually when you're
+    first settings things up, since programming responses into the
+    bot directory is cumbersome at best.  Just make sure the bot is
+    not running while you're editing the file, or you're likely to
+    lose changes.
+
+	As of version 1.0.08b, the access users have to responses can
+	be restricted to specific response types.  There are two types
+	of users who can edit responses.  Those who have +l, and those
+	who have +L.  Look in the config file for more details.  As an
+	example, the default allows users with +l to access (edit)
+	"lyrics" and "url" responses, while users with +L can access
+	any type of response.
+
+    The main reason why response commands were implemented to edit
+    responses in the first place was to give users who DIDN'T have
+    access to the machine on which the bot was running the ability to
+    program responses and lyrics into the bot, not as a convenient
+    tool for adding responses yourself.  Maybe someday I'll find an
+    easier solution.  But for now, this is acceptable.  Besides, I have
+    the web page all set up for editing responses which is even easier
+    than editing by hand, and any user with +l can do it from the page!
+
+    You'll notice there is no 'reload' command.  A reload command
+    is very dangerous since reloading a bot file will wipe out any
+    changes made to the internal databases.  Being able to do this
+    kind of goes against the design I had for Grufti, one of which
+    was that the integrity of the bot be very stable, and that a high
+    priority is given for keeping the datafiles intact.
+
+    By looking at how the example responses are set up, you should be
+    able to figure out how responses are matched, and go from there.
+
+
+9. Changes
+----------
+    From this point on I will be keeping track of all changes made to
+    the bot, since this is the first real release.  I hadn't really
+    been doing changes before since there were gaping holes that I
+    needed to fill, things I had wanted to do with the bot from the
+    very beginning and have only now gotten to.  I am pleased to say
+    though that this release encompasses nearly every feature I wanted
+    to see in a Grufti.  There are only a few minor details I need to
+    attend to, but all the major functionality is there.  As I come up
+    with more ideas, I will work my way up to the next major release
+    of 1.1.  In the meantime, expect to see intermediate releases which
+    will be bugfixes, or small changes.  I have no doubts that I can
+    keep the bot files format the same, so that any version of Grufti
+    will be compatible with bot files written by any other version.
+
+    Since this is a pre-README, I will no doubt incorporate popular
+    questions and possibly a FAQ into the next release...
+
+
+10. What next?
+--------------
+    Bedtime!
+
+    Thanks for reading this far!  Grufti has been a lot of fun to
+    work on, and I hope you have just as much fun running yours as
+    I do mine.  Feel free to check out the REAL Grufti, who watches
+    #gothic on EFNet IRC.
+
+    Send me a line at stever@area23.org
+
+    Have fun!
+
+
+	- Steve  10/21/97

@@ -1,0 +1,528 @@
+Changes to Grufti
+-----------------
+
+grufti-1.0.17  [02mar2000]
+* Fixed a crashing bug that occurred when a URL stored in the webcatch
+  contained a "%" character.
+* Fixed a bug that would cause users not to be unbanned if the user
+  doing the banning was not registered on the bot. (found by komakino)
+
+
+grufti-1.0.16  [02jan2000]
+* All dates are now shown with 10 characters instead of 8 so that the full
+  year is displayed.  Fixed the 01/01/100 problem.  This required several
+  changes as much of the code assumed the date was 8 characters.  Affected
+  commands:
+     - finger (creation time)
+     - whois
+     - seen userhost
+     - notes
+     - showresponse, searchresponse
+     - stat
+     - banlist
+     - showbans
+     - showhistory
+
+
+grufti-1.0.15  [22dec1999]
+* Left an unsigned long defined as ulong instead of u_long.
+
+
+grufti-1.0.14  [21dec1999]
+* Web interface was displaying blank pages on some web servers.  Reverted to
+  old behavior as this problem hasn't been fully investigated.
+* Logs weren't being carried over properly.
+* Make Owner and Master exempt from users that get auto deleted.
+* Fixed list manager object, which would crash if attempting to sort
+  an empty list (fixed by MSK)
+* Added ability to merge userlists.  Specify "mergeusers <filename>" in the
+  config file, where <filename> is a userlist which is to be merged with the
+  current userlist. (written by MSK)
+
+
+grufti-1.0.13  [29jun99]
+* Added last login field.  Gets displayed in finger output, stat listing,
+  and nightly reports.
+* Fixed gb.cgi again
+* Fixed 'meminfo' output so that 4 digit numbers don't get comma'd (and
+  therefore don't cause the line to wrap)
+* Split cmd.c into cmd1.c and cmd2.c.  Some compilers can't handle large
+  source files.
+
+
+grufti-1.0.12  [23jun99]
+* Fixed code that displayed junk in notifications when deleting responses
+  from the web page
+* Changed my email address everywhere
+* Log files are now timestamped, which allows GruftiStats to know the right
+  date for the logs (added by cph)
+* Made some slight changes to cgi.  If you were having problems with the
+  web page interface taking you to a blank page or error page after login,
+  try again with this build.
+* Allow web page banner image width and height to be set in webconfig.h.
+* Fixed code that was causing the bot to crash on Xnet, as a result of
+  bad USERHOST replies (fixed by cph)
+* Improved code to deal with dynamic hostnames (added by cph)
+* Fixed 'setvar' command so that quoted arguments can be set, and so that
+  erroneous message "unable to set variable" is quenched.
+* Fixed security hole that allowed users to send commands on behalf of other
+  users.  If JoeHax0r changes to a nick of Mary's and sends a command that
+  requires a password, that command would get executed by Mary next time
+  she logged in and sent her password.  We now use a timeout configurable
+  in config.gb (pending-command-timeout), and require the nicks to be the
+* New command: delhostmask
+
+
+grufti-1.0.11  [12mar99]
+* Updated configure to reflect minor version.
+* Moved welcome text from dcc.c to etc/welcome.  This text is sent to
+  new users over DCC CHAT.  See entry welcome-dcc in config.gb.
+* Modified some help text in etc/help.
+* Added 'searchresponse' to topics cool and response
+* New command: searchresponse
+* Fixed bug with 'setother' commands that allowed users to set their
+  info field to a length that was larger than permitted.
+* Modified 'pass' command so that it takes an optional user@hostmask as an
+  argument.  This allows users to validate accounts that are listed in
+  their whois.
+* Added config setting that controls whether users can send their password
+  via normal message.  The default is to require DCC.  See the config
+  setting 'require-dcc-for-pass-command'.
+* Modified 'pass' command so that it requires users to use a correct
+  password if they're already authenticated.  The old behavior was to
+  tell the user they already sent their password regardless of the whether
+  the password was actually correct.
+* Fixed bug that displayed 0 hour usage as 0.1 for H/Day.
+* When reading Notes, extra information about the Note is displayed in
+  the "---------" area.
+* New command: showother
+* New command: delother
+* Modified usage message for 'showresponse' command.
+* Setup hooks for response history.  Not implemented yet.
+* Fixed bug in 'addhistory' command.  No arguments would not show usage
+  message.
+* New command: setusernumber
+* New command: setusercreation
+* The 'setusernumber' and 'setusercreation' commands should only be used
+  when accounts are accidentally deleted, and the original info is
+  desired.  No checking is done to assert that user numbers don't collide.
+* Mirrored 'setlocation' as 'setlocat'.  Some users see 'locat' in the
+  finger display and try 'setlocat' to set it.
+* Fixed stat counter 'commands'.
+* Fixed bug where signoff messages were being assigned to non-registered
+  user entry.  This was causing the bot to display erroneous signoff
+  messages for non-registered users.
+* Modified copyright string so that it contained major and minor build
+  information.
+* Fixed bug in Setup web page that caused the user not to be able to
+  enter text in the web page field.
+* Fixed 'setbday' command so that users couldn't enter crazy years.
+* Fixed topic not showing up on web page.
+
+
+grufti-1.0.10  [15oct98]
+* Removed "DCC connection limit reached" message.  This was causing the
+  bot to flood off when lusers tried flooding the bot with DCC requests.
+* Updated all instances of variable argument functions so that they were
+  called with proper syntax.  This should fix the "%" problems.
+* New channel flag to keep the key from being shown from channel listing.
+  (suggested by zinn)
+* Changed 'banlist' output, now includes numbered entries that can be used
+  to identify the ban when deleting.  (suggested by Illusion)
+* Fixed it so that when long lines with no spaces are split, the last 
+  character doesn't get eaten.
+* New command: wallnote <level> <msg...>
+  Allows you to send mass notes to users matching levels (ie. +3o-f)
+* Fixed bug that caused history lines to get formatted incorrectly when
+  multiple mode changes occurred from one command. (fixed by Uhlume)
+* Fixed bug that resulted in carriage returns being displayed from the
+  watchlog command.
+* Added check for shitlisted user (banlist) when a nick change is detected.
+* Changed 'configinfo' output so that long variable names could be displayed.
+* Added 'Command-Line' area to Web page.  Finally...
+* Fixed bug that wouldn't allow people to compile the cgi on machines where
+  <sys/types.h> didn't include abbreviated types.  (fixed by Mattison)
+* Fixed bug in cgi that results in blank pages being displayed when the
+  web server doesn't set REMOTE_HOST.  (found by Mattison)
+* Updated the help file so that instances of "Grufti" were replaced with
+  "\n".  Didn't we already do this?
+* Still having some problems with the bot failing to acknowlege on DCC CHAT...
+
+
+grufti-1.0.09  [15aug98]
+* Fixed network interface, where an EOF in one case could pass undetected.
+* Fixed byte ordering problem which caused the bot not to connect on DCC CHAT.
+* Updated Makefile so that compiler optimization is set to O2 for IRIX users.
+* Fixed account history display and new owner being added.
+
+
+grufti-1.0.08  [14aug98]
+* New net.c core, new command module, new listmgr module.  Gearing up
+  for Grufti2.0.
+* Support for +l and +L.  See config.gb under response for details.
+* Public support for 'info' command.  Usage is: <botnick> info <nick> <slot>
+  For example:  "grufti info arkham music"  will have the bot display the
+  music slot for Arkham, if one is set (under 'other').  Slots 'email', 'www'
+  and 'bday' work too.  Saying "grufti email arkham" will soon become just
+  an alias for "grufti info arkham email".  This command isn't quite done
+  yet.  Will embellish on later.
+* Changed the 'seen' command to require a DCC connection.  It was possible
+  to flood the bot off when doing /msg grufti seen *@*.
+* Fixed a bug that caused the bot to crash too many dcc chat requests were open.
+* Fixed a bug that wouldn't allow users to CHAT the bot when allow-dcc-send
+  was set to false.
+* Fixed a bug that wouldn't allow config variable strings with commands to
+  be parsed correctly.
+* Unknown config file entries cause a fatal error on startup instead of
+  being logged and ignored.
+* Added config entries 'auto-detect-takeover' and 'takeover-in-progress-msg'.
+* Changed the install script so that it reads the version number from the
+  config file, and updates it appropriately.
+* NOTE: the command 'reset-motd' has been temporarily changed to 'resetmotd'
+        due to the new command restructuring.
+* Account history support.  Logs when user has a level change, or when a master
+  adds a log event manually.  Use 'showhistory' and 'addhistory'.
+
+
+grufti-1.0.07  [21apr98]
+* Made some text more readable in config.gb.
+* Support for +l and +L almost ready, preparation changes in cmd.c and
+  config.gb.
+* Fixed bug introduced in last release which doesn't allow users with +l
+  to add responses from the web page.  (web page was wanting USER_RESPONSE
+  which was mapped to +L, oops!)
+* Fixed bug in 'users' command.  Flag arguments which matched no users would
+  display redundant message. (found by Dethtonge)
+* Replaced BUFSIZ allocation for strings with more appropriate sizes.
+* Preparations for TinyGrufti code, new files tgrufti.c, tgrufti.h, tgcmd.c,
+  tgcmd.h.  This will not be fully working until version 1.1, the next major
+  release.
+* Found a really nasty bug involving memory being corrupted.  This is causing
+  the flags for a DCC record to change for no reason.  This is critical since
+  there are about 30 different flags which control the state of any DCC
+  device, and when the flags change for no reason we get real problems.
+  (NOT RESOLVED YET)
+* Added make install-cgi option to the Makefile.in in the src directory.
+* Added README file to webstuff directory.
+* Added register.html to webstuff directory.
+
+
+grufti-1.0.06  [10apr98]
+* Bug in suffixes for birthdays.  21st, 22nd, 23rd were showing up as
+  "21th, 22th, 23th"  (found by DethTonge)
+* Added Event Calendar to the web page area.  Users can sign up for
+  events, remove themselves, and always have access to changing their
+  event info from the page.
+* Modified Event display (showevents) to display blanks instead of N/A.
+* NEED_WRITE flag wasn't being set when users removed themselves from events.
+* Removed the hardwired "Grufti" in Grufti Notices so that they now read
+  BOT Notices, where BOT is the name of the bot.
+* URL Catch (webcatch) added to the web page area.  (by uhlume)
+* Stat area added to the web page.  (by uhlume)
+* The following changes were also made by Uhlume which greatly improve the look
+  and flexibility of the web page area, and which fix a number of bugs.
+    - control characters now perform expected results on web page
+      (ie: ^b is bright text)
+    - html tags properly escaped and translated (&lt, &quot, etc)
+    - Fixed bug in users listing, wasn't showing last user in table
+    - Fixed bug in setup, max limit on greetlines not working
+    - Replaced occurrences of 'Grufti' with Grufti->botnick.
+    - Cleaned up Response code so that the response types weren't
+      hardwired into the page
+    - Tightened up Toolbar to include more entries, channel name
+      no longer hardwired to the toolbar.
+    - General cleanup of font sizes, headings, etc.  More consistent.
+* Designated a webconfig.h to control all web_module settings.  Any bot owners
+  with CGI support should be able to get their web interface up and running.
+  Summary of steps in webconfig.h added to assist bot owners in CGI setup.
+* Added nick search box to user listing and each finger display
+* Fixed adding Locations routine in Setup so that cities with multiple words
+  parse correctly.
+* Added config file entry to give us the option of making the bot exit if
+  we couldn't get the requested telnet or gateway port.  This is important
+  since we don't want our bot listening on a different port if it couldn't get
+  the one that was specified, and having us wonder why the web page and
+  gateway clients are not working. (set quit-port-request-failed 1)
+* Added the ability to type 'make cgi' from the botdir.
+* WEB_MODULE now defined by default.  Edit the Makefile and undefine it
+  if you know you won't be needing it.
+* Idlekick routines not working right.  Hopefull fixed. (found by WeaselBoy)
+* We check to make sure u_char, u_int, etc are defined and if not, define
+  them.  This leads to erratic bugs every so often.
+* Added 'install-cgi' script to help in the installation of the CGI.
+* Modified README to make installation a little clearer.
+* Last seen time for account and user were not being set when they dropped
+  off IRC and they weren't on a channel.
+
+
+grufti-1.0.05  [31mar98]
+* MOTD only shows when motd has changed.  New command 'reset-motd' needs to
+  be used whenever the motd is changed on disk.  If command is not run, users
+  will never see the new motd unles they specifically request it.  Config
+  variable 'show-motd-onlywhenchanged' added to give control of this feature.
+* New config variable 'auto-detect-takeover'.  This will set a flag whenever
+  the bot can't join a channel due to invite-only, or banned from channel.
+  When the flag is set, the bot will message registered users who join IRC
+  and inform them of the takever, stored in 'takeover-in-progress-msg'.
+  can be overridden by turning OFF auto-detect-takever, and setting the
+  'takeover-in-progress' flag yourself via setvar.
+* Fixed 'delserver' bug that crashed the bot whenever it was used.
+* Added config variable 'allow-dcc-send' which specifies whether or not the
+  bot will accept DCC SEND requests.  (reports of the bot crashing on mass
+  dcc send requests)
+* Modified the routine under 'pass' so that users with +o are given ops
+  even if they have already sent their password.  (before it would just return)
+* Cleaned up 'pass' command
+* Cleaned up 'delresponse' command, name of response now shown when lines are
+  deleted.
+* Fixed bug in 'whoami' command which is supposed to show finger info for
+  current user, but was just showing default 'finger' with no arguments.
+* DCC, telnet logins now log to LOG_RAW also.
+* Added support for kicking idle users.  Control is done through the config
+  variables 'kick-channel-idlers', 'idle-time', 'idlekick-timeout', and
+  'kick-idle-opers'.  They can be found in the channel config section.  The
+  default behaviour is not to kick idlers.
+
+grufti-1.0.04  [16jan98]
+* Added an EVENT LIST which stores upcoming events and who will be attending.
+   - Commands: addevent, delevent, showevents, showevent, seteventname,
+               seteventplace, seteventdates, seteventabout, seteventadmin,
+               attendevent, unattendevent, seteventwhen, seteventcontact,
+               eventnote
+   - Config file: send-notice-event-created, send-notice-event-deleted
+                  eventsfile, write-backup-events,
+   - new files: event.c, event.h
+   - help subjects: (not including commands) event, events
+* Removed 'Loading commands' and 'Loading webcmds' from startup screen
+* Update install script to handle direct installs (only writes executable
+  to new location).  Use 'make xinstall', but with caution...
+* Updated install script to exit if running bot is detected in install dir.
+* Fixed spelling errors in command help outputs
+* Updated 'chlocation' and 'dellocation' to recognize when invalid numbers
+  aren't just improper strings.
+* 'write' command wasn't showing correct lists you could use if you typed
+  one that wasn't supported.
+* Fixed install script to run under AIX sh.
+* More clear that +w is the owner account when first creating owner account
+* If no process is found for pid in pid file, pid file is removed.
+* Added birthday field to 'finger' info.  The 'showbdays' command is used
+  to display all months with birthdays, or whose birthdays are occurring
+  for a given month.
+   - Commands: setbday, showbdays
+* Added 'set bday' field to 'setup' page in Grufti land.  (src-cgi/webclient.c
+  modified to support bday field)
+* Added 'showbdays' hook on channel to display who's birthdays are occuring
+  in the next 2 weeks.
+* Added 'bday' hook (and 'birthday') on channel to display a nick's birthday.
+* Removed some topics from 'subject cool' in the help file.  Added 'showbdays'
+* Adjusted 'got' routines so we don't have to wait for the WHO channel list
+  to finish before we can start responding to public chatter and joins.
+* Updated 'checkforurl/email/bday' routines so we can ask real questions
+  such as "what is xxx's birthday?"
+* Added virtual hosting.  Config entry is 'virtual-hostname'.  Set ONLY if you
+  are using a hostname which is registered to the domain from which the bot 
+  is running.
+
+
+grufti-1.0.03  [3jan98]
+* Added alias 'mail' which points to 'email' command
+* Added 'forward' help subject to describe 'setforward' and 'forwardnotes'
+* Added 'setinfo' help subject which mirrors 'account' help subject
+* Grufti Land setup was inserting 'http:\\' instead of 'http://' as default
+  web address. (found by SANdMAN)
+* Leaving 'http://' in the Grufti Land www box would end up setting the user's
+  url to 'http://' instead of setting it to none. (fixed)
+* Added routine to display signoff messages for users, displayed from a
+  'have you seen' request or 'seen' command.  The bot had been trapping signoff
+  messages for months, but I just never got around to sticking them in the
+  have you seen responses.  Signoff messages are stored in database too.
+* Kicks were not being incremented correctly.  It turns out a user's kick
+  status was only increased if the kickee was REGISTERED.  Doh! (fixed)
+* Added capability to display signoff messages from 'have you seen' command
+  for signoffs other than IRC (ie. via web page, or via telnet)
+* TODO: Need to find a way of resetting signoff message when all nicks have
+  signed off, NOT via QUIT on channel.  Right now, if a user telnets in to 
+  the bot for example, and then parts the channel and signs off, we'll still
+  have the signoff message from the telnet session...
+* Updated 'finger' command to display correct last seen if user has no
+  hostmasks.  (Hasn't been seen in over x days where 'x' is hostmask timeout) 
+* Check for gotpossiblesignon() in gotjoin(). (This wasn't in here before
+  so that the bot wouldn't inform the user of notes immediately on join,
+  possibly causing the user to miss the message.  As soon as USERHOST cycled
+  around again (~5 or so mins) the user would be notified... but i don't like
+  that any more.)
+* Bot no longer informs user he can't op them on certain channels if the user
+  isn't even on the channel.  (ie. Doing 'op' with no arguments)
+
+
+grufti-1.0.02  [9dec97]
+* Stat was showing timeout for Notes as timeout_users, not timeout_notes.
+* Fatal error for "config file not found" was trying to display name of
+  file as argument, which isn't supported in fatal().
+* Added commands 'email' and 'url'.
+* Added detailed breakdown of stats to 'stat <nick>' command.
+* Fixed some spelling errors in help file
+* Added config-file entry for "10:15 on a saturday night".  Default is OFF.
+  UTC's are still hardcoded so you'll have to change them if you're not on PST.
+* Help 'levels' wasn't showing level w (owner level)
+* install script wasn't parsing ~ correctly (new install script by rubella)
+* Tweaked code in certain places to make sure Usage time truly reflected
+  actual time seen.  Since the bot waits until a user leaves IRC before he
+  can add that amount of time to their total usage, we need to make sure we
+  account for that if the person is online right now.  This was being
+  overlooked in a few places resulting in 'stat' usage being a little off
+  from 'finger' usage etc.
+* Bugfix: in calculating usage in 'finger', 3600 * 7 is NOT 25620.  :>
+* updated checkforstat() to recognize 'stats' as well as 'stat' on channel
+* Added commands 'setforward' and 'forwardnotes'.  Now you can have your
+  Notes automatically forwarded to an email address, or forward all the Notes
+  in your mailbox.  Notes received by users with forwarding addresses are
+  marked 'FORWARD' and are sent every 'dequeuenotes-freq' seconds.  The bot
+  also uses an SMTP gateway which you can specify with 'smtp-gateway'.  No
+  checking is done on the validity of an email address.  Notes forwarded to
+  invalid addresses will DISAPPEAR!  (well, they might be returned to the
+  sender if your bot username and host are valid)
+* Added config file entries: 'smtp-gateway', 'dequeuenotes-freq', 'smtp-timeout'
+* Modified informuserofnotes() so that users with forwarding addresses don't
+  get bugged with new, incoming Notes.
+* Finger info displays 'Fwd' instead of # Notes if user is forwarding
+* Modified 'setemail' to use only the first argument as the email address
+  (forwardnotes() uses this as your return address in email)
+* Added 'x Notes forwarded' to status reports
+* Timeout routines for Users, Accounts, and Notes were a day short. (fixed)
+* Dropped 'Serv codes' display from start screen
+
+
+grufti-1.0.01  [11Nov97]
+* still working on '%' bug.  Moved killpercentchars() routine so that
+  % characters are killed before any of the response checks (url, email, etc)
+* Bugfix: 'stat bans' wasn't displaying the header (found by Nicholas)
+* Bugfix: 'have you seen my' was going voodoo if nothing was specified after
+  the 'my' (fixed)
+* Bot still wasn't keeping track of all of its own public chatter (fixed)
+* Added '10:15 on a Saturday night' :> (request by nada)
+* Increased buffer for 'have you seen my' (request by rubella)
+* Added 'showbans' command to display channel bans (different from 'banlist')
+* Bugfix: NULL pointer assignment in 'uhush' command (fixed)
+* Added aliases 'showdcc', 'showmem', 'showconfig', 'showconfigs', 'showcodes',
+  'servers', 'showservers', 'showcommands'.
+* got367() (channel bans) wasn't parsing nick and uh for person who set ban.
+* Bugfix: chatter, kicks, and bans weren't being reset for each day. (found by
+  rayne)
+* Bugfix: userlist wasn't storing stats for web/telnet commands (fixed)
+* Users weren't being informed of incoming Notes if the Note came from the
+  web page.
+* Added AWAY field in channel member records... for now we don't do anything
+  with this information, but maybe we'll use it to add up usage times for when
+  users aren't away etc.
+* Added an 'install' script that can be invoked with 'make install'.  This
+  greatly simplifies upgrading to a new version.  As a result, unpacking the
+  bot will contain a different directory structure.
+* Modified the README file a bit to reflect new changes, and made it more
+  organized and pleasing to the eye.
+* Added FORCE switch to 'writeallfiles()' which gives us the option to write
+  empty files to disk.  This gets rid of the problem of bot files not being
+  found on startup and during backups.
+* Added the helpfile translator \w which translates into the bot's homepage
+* Switched version scheme to use incremental number instead of date.
+  Bugfixes and normal distributions will increment in the last digits.
+  Significant releases will have versions which increment in the middle digits.
+  The next significant release is not expected to happen until after 1998,
+  when AI is possibly introduced.  Releases which change the version number
+  in the first digit will probably never happen, unless the bot is basically
+  rewritten from scratch, or the middle digits are at .9.
+
+
+v1.0_1104  [04nov97]
+* Bugfix: 'have you seen %a%b%c...' was making the bot crash.  Fixed for now,
+  but this % problem is evident in any routine which makes use of any of the
+  'say' routines.  Well need to fix this once and for all sometime. (found by
+  nada)
+* Bugfix: DCC file transfers which occur in less than 1 second were making
+  the bot crash, due to a divide-by-0 overlook. (fixed)
+* Bot wasn't logging topic changes (fixed)
+* Made alias 'kb' to point to kickban command.
+* Bot wasn't keeping track of its own public chatter (fixed)
+* Added 'help' to skel directory
+
+
+v1.0_1026  [26oct97]
+* Bugfix: 'stat' report wasn't showing most up-to-date time for servers
+
+
+v1.0_1025  [25oct97]
+* Bugfix: log files STILL weren't being moved to .yesterday, sorry! (fixed)
+
+
+v1.0_1023  [23oct97]
+* Created this CHANGES file
+* Bugfix: motd wasn't being displayed when user logged in via the web (fixed)
+* Bugfix: log files weren't being moved to .yesterday (fixed)
+* Bugfix: rn <nick> was working like 'showmylastnote <nick>' (fixed)
+* Bugfix: Entering usernames longer than 8 characters was not letting users
+  enter password on intial account setup (fixed)
+* Bugfix: ops and +v were being forgotten when users changed nicks (doh!)
+* Bugfix: servinfo <server> not displaying headers and footers right (fixed)
+* Bugfix: 'other' slots 2-10 weren't being freed from memory (fixed)
+* 'mode' command can no longer be used to change +r level (ack)
+* Some versions of make don't like : as a comment character (changed to #)
+* Added separate timeout setting for Grufti Notices (config: timeout-notices)
+* Added timeout settings that were left out of config.gb
+* Added owner (+w) flag to the owner account (created on the first run) so
+  that it can never be deleted or have any of its levels taken away.
+* Mode changes result in 1 Grufti Notice instead of separate Notices for each
+  level given or taken away
+* Added server statistics to 'stat' command
+* Changed layout of config.gb
+* Changed example servers in config.gb
+* Combos file was giving instructions with wrong translation character (changed)
+* Top-level Makefile showed my old email address
+* Deleted help subjects Grufti1.0, features, todo, and faq
+* Deleted commands 'display' and 'server'
+
+
+v1.0_1021  [21oct97]
+* a README file
+* Added a banlist (commands: addban, delban, banlist)
+* Ability to make the bot stop chattering on the channel for a specified amount
+  of time (commands: hush, unhush)
+* Ability to make the bot leave the channel for a specified amount of time
+  (commands: leave, join)
+* rn now supports a nick (rn <nick>) to read the last Note from that person
+* new 'backup' command backs up all botfiles to the backup directory
+  specified in the config file
+* reorganized file locations so that bot files are specified without the
+  directory, and added config variables for directories of type bot, admin,
+  logs, and backup.
+* Backup can be written automatically at midnight
+* Added the level +v for voice (commands: voice)
+* Added the level +n for Grufti notices.  Notices which would have been sent
+  to all masters are now sent to users with +n.
+* Added config settings for determining what triggers a Grufti notice
+* Added command 'stat' to display irc and bot statistics for the day
+* Stat report for the day can be Grufti Notice'd to users with +n each night
+  at midnight.  Turned on or off in config.gb.
+* Stat command now supports the arguments kicks, bans, chatter, usage, and
+  <nick> to see stats on those types
+* Bot now stores chatter, bans, and kicks for each user
+* Stat command can be viewed on channel (<botnick> stat [kicks | bans |
+  usage | <nick>]
+* New bot file 'stats' stores statistical info so that the bot knows the stats
+  for the day even if it has been restarted
+* Bot now responds to keywords email and url on channel and displays email
+  or URL of the nick specified
+* Added config settings for whether the bot responds to stat, have you seen,
+  url, or email on channel.
+* Added commands 'kick', 'ban', and 'kickban'
+* Channel settings in config.gb now support channel modes and enforcement
+* Added 'invite' command
+* Implemented channel protection, users with +f, +p, or +m are unbanned if
+  ever banned on the channel.  If user is +p or +m, the person who banned
+  is kicked unless they are of +m, +p, +3, +t, +o, +b themselves.
+* Updated help file to include the \n translation modifier for the bot's nick
+* Updated help file to reflect TONS of changes
+* Support for 9 other lines instead of 2
+* Channel routines now support & and + channels
+* Grufti Notices are not deleted as soon as they are read
+
+

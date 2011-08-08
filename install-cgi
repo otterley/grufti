@@ -1,0 +1,103 @@
+#!/bin/sh
+#############################################################################
+# Steve Rider - stever@area23.org
+# Grufti - an interactive, service-oriented bot for IRC
+#
+# installation script for cgi - copies gb.cgi to appropriate directory
+#
+#############################################################################
+
+# One lone define.
+NOGO="You don't have permission to create a directory there!"
+
+# Whee. This is where the fun stuff happens.
+
+echo ""
+echo "========================================================================"
+if [ ! -r gb.cgi ]; then
+	cat <<UNMADE
+
+You must first configure and compile the cgi before you can
+install it.  Type 'make cgi' to proceed.
+
+UNMADE
+	exit 1
+fi
+
+
+cat <<WELCOME
+
+Welcome to the Grufti CGI installation script.
+
+This script will install the CGI executable into the specified CGI
+directory.  If you do not have a dedicated CGI directory, then most
+likely you will use the standard public_html directory.  If you are
+not sure that you are able to even use CGI executables, try it anyway :>
+
+Directory to install the CGI [~/public_html] 
+WELCOME
+
+read dir
+echo ""
+
+if [ $dir"x" = "x" ] ; then
+	dir="${HOME}/public_html"
+elif [ `echo $dir | grep -c '~'` -eq 1 ] ; then
+	dir=`echo $dir | sed -e 's/\~//;'`
+	dir=${HOME}${dir}
+else
+	dir=$dir
+fi
+
+if [ $dir = `pwd` ]; then
+	echo $NOGO
+	exit 1
+fi
+
+echo "Installing to: $dir"
+if [ ! -d $dir ]; then
+	mkdir $dir
+fi
+
+if [ ! -d $dir ]; then
+	echo ""
+	echo "The directory \"$dir\" is invalid."
+	echo ""
+	exit 1
+fi
+
+if [ ! -r $dir -o ! -w $dir -o ! $dir ]; then
+	echo $NOGO
+	exit 1
+fi
+
+if [ ! -r README ]; then
+	echo ""
+	echo "You must run the install script from the Grufti directory!"
+	echo ""
+	exit 1
+fi
+
+echo ""
+echo "Copying gb.cgi file..."
+if [ -r $dir/gb.cgi ]; then
+	mv -f $dir/gb.cgi $dir/gb.cgi.old
+	echo "Moving existing gb.cgi to gb.cgi.old..."
+fi
+
+cp -f gb.cgi $dir
+chmod 755 $dir/gb.cgi
+
+cat <<EOF
+Done.
+
+If you haven't read the README file, READ IT NOW!!!
+
+The CGI executable has been installed and given the permission 755.  You
+should be able to open the URL you specified in webconfig.h to access
+the web interface.  Use the index.html file in the webstuff directory
+to see how to provide a link to your CGI so that you can login.
+========================================================================
+
+EOF
+

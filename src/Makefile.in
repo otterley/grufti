@@ -1,0 +1,433 @@
+# --------------------------------------------------------------------------
+# Steve Rider - stever@area23.org
+# Grufti - an interactive, service-oriented bot for IRC
+#
+# Makefile
+#
+# --------------------------------------------------------------------------
+
+# Executable name
+INST_NAME = grufti
+
+# Add -DWEB_MODULE if you are planning on using the cgi interface included
+# Add -DRAW_LOGGING if you are planning on logging raw server/dcc chatter
+DEFINES = -DWEB_MODULE
+
+CC = gcc
+CFLAGS = @OPT_LEVEL@ -fno-strength-reduce @CFLAGS@
+CLINKFLAGS = @STRIP@ @LIBS@
+
+
+# No need to change anything below this line
+# --------------------------------------------------------------------------
+OBJECTS = banlist.o blowfish.o channel.o cmd1.o cmd2.o codes.o command.o\
+	dcc.o event.o fhelp.o got.o grufti.o gruftiaux.o location.o log.o\
+	main.o match.o misc.o mode.o net.o note.o notify.o response.o server.o\
+	sigcatch.o trigcmd.o trigops.o triglist.o listmgr.o url.o user.o web.o\
+	webcmd.o xmem.o
+
+SOURCES = banlist.c blowfish.c channel.c cmd1.c cmd2.c codes.c command.c\
+	dcc.c event.c fhelp.c got.c grufti.c gruftiaux.c location.c log.c\
+	main.c match.c misc.c mode.c net.c note.c notify.c response.c server.c\
+	sigcatch.c trigcmd.c trigops.c triglist.c listmgr.c url.c user.c web.c\
+	webcmd.c xmem.c
+
+${INST_NAME}: ${OBJECTS}
+	${CC} ${CLINKFLAGS} -o ../${INST_NAME} ${OBJECTS}
+	@echo ""
+	@echo "Successful compile: ../${INST_NAME}"
+	@echo "Type 'make install' to install all the components."
+	@echo ""
+
+o: ${OBJECTS}
+	@echo "Object files successfully compiled."
+
+.c.o: ; ${CC} ${CFLAGS} ${DEFINES} -c $<
+
+
+# Testing modules
+test: dotest listmgr net xmem blowfish
+	@echo "Test files compiled."
+
+dotest:
+	@echo "./listmgr; ./net; ./xmem; ./blowfish" >> dotest
+	@chmod 700 dotest
+
+net: net.c
+	${CC} -o net net.c -DTEST @LIBS@
+
+listmgr: listmgr.c
+	${CC} -o listmgr listmgr.c -DTEST
+
+xmem: xmem.c
+	${CC} -o xmem xmem.c -DTEST -DMEMDEBUG
+
+blowfish: blowfish.c
+	${CC} -o blowfish blowfish.c -DTEST
+
+all-command: command.c
+	${CC} -c command.c -DTEST
+	${CC} -c listmgr.c -DSTANDALONE
+	${CC} -c xmem.c -DSTANDALONE
+	${CC} -c triglist.c -DSTANDALONE
+	${CC} -c trigcmd.c -DSTANDALONE
+	${CC} -o command command.o listmgr.o xmem.o trigcmd.o triglist.o
+
+command: command.c
+	${CC} -c command.c -DTEST
+	${CC} -o command command.o listmgr.o xmem.o trigcmd.o triglist.o
+
+test-clean:
+	@echo "Removing test modules..."
+	@rm -f dotest
+	@rm -f net
+	@rm -f listmgr
+	@rm -f xmem
+	@rm -f blowfish
+	@rm -f triglist
+	@rm -f state
+
+
+
+install:
+	@cd ..; sh ./install
+
+install-cgi:
+	@cd ..; sh ./install-cgi
+
+xinstall:
+	@cd ..; sh ./install 1
+
+dist: clean
+	@rm -f ${INST_NAME}
+	@rm -f ../${INST_NAME}
+	@echo "Resetting configure scripts..."
+	@rm -f ../configure/config.cache
+	@rm -f ../configure/config.status
+	@rm -f ../configure/config.log
+	@rm -f config.h
+	@rm -f Makefile
+	@rm -f Makefile.tmp
+	@rm -f Makefile.bak
+	@rm -f ../src-cgi/Makefile
+	@rm -f ../src-cgi/Makefile.tmp
+	@rm -f ../src-cgi/Makefile.bak
+	@echo "Creating distribution Makefile..."
+	@echo "# Tmp Makefile until we create one with configure..." > Makefile.tmp
+	@echo "" >> Makefile.tmp
+	@echo "tmp:" >> Makefile.tmp
+	@echo "	@cd ../configure; sh ./configure" >> Makefile.tmp
+	@echo "	@echo \"Ready to compile the bot.  This may take a while...\"" >> Makefile.tmp
+	@echo "	@echo \"\"" >> Makefile.tmp
+	@echo "	@make" >> Makefile.tmp
+	@echo "" >> Makefile.tmp
+	@echo "config:" >> Makefile.tmp
+	@echo "	@cd ../configure; sh ./configure" >> Makefile.tmp
+	@echo "" >> Makefile.tmp
+	@echo "dist:" >> Makefile.tmp
+	@echo "	@echo \"Already ready for distribution!\"" >> Makefile.tmp
+	@mv -f Makefile.tmp Makefile
+	@echo ""
+	@echo "Ready for distribution."
+
+cgi:
+	@cd ../src-cgi; make
+
+config:
+	@cd ../configure; sh ./configure
+
+clean: test-clean
+	@echo "Removing object files..."
+	@rm -f *.o
+	@rm -f *.a
+	@rm -f ../core
+	@rm -f core
+	@rm -f ../src-cgi/*.o
+	@rm -f ../src-cgi/*.a
+	@rm -f ../src-cgi/core
+	@rm -f ../gb.cgi
+	@rm -f a
+
+depend:
+	@echo "Updating dependencies..."
+	@makedepend ${SOURCES}
+
+# Our dependencies
+# DO NOT DELETE THIS LINE -- make depend depends on it.
+web.o: ../webconfig.h
+event.o: config.h
+event.o: event.h
+event.o: grufti.h
+event.o: gruftiaux.h
+event.o: log.h
+event.o: misc.h
+event.o: typedefs.h
+event.o: user.h
+banlist.o: banlist.h
+banlist.o: channel.h
+banlist.o: config.h
+banlist.o: grufti.h
+banlist.o: gruftiaux.h
+banlist.o: log.h
+banlist.o: misc.h
+banlist.o: typedefs.h
+banlist.o: user.h
+note.o: config.h
+note.o: dcc.h
+note.o: grufti.h
+note.o: gruftiaux.h
+note.o: log.h
+note.o: misc.h
+note.o: note.h
+note.o: typedefs.h
+note.o: user.h
+notify.o: config.h
+notify.o: dcc.h
+notify.o: grufti.h
+notify.o: gruftiaux.h
+notify.o: log.h
+notify.o: misc.h
+notify.o: notify.h
+notify.o: server.h
+notify.o: typedefs.h
+notify.o: user.h
+location.o: config.h
+location.o: grufti.h
+location.o: gruftiaux.h
+location.o: location.h
+location.o: log.h
+location.o: misc.h
+location.o: typedefs.h
+location.o: user.h
+mode.o: banlist.h
+mode.o: channel.h
+mode.o: config.h
+mode.o: dcc.h
+mode.o: grufti.h
+mode.o: gruftiaux.h
+mode.o: log.h
+mode.o: misc.h
+mode.o: mode.h
+mode.o: server.h
+mode.o: typedefs.h
+mode.o: user.h
+codes.o: codes.h
+codes.o: config.h
+codes.o: grufti.h
+codes.o: gruftiaux.h
+codes.o: log.h
+codes.o: misc.h
+codes.o: typedefs.h
+response.o: channel.h
+response.o: config.h
+response.o: grufti.h
+response.o: gruftiaux.h
+response.o: log.h
+response.o: misc.h
+response.o: notify.h
+response.o: response.h
+response.o: server.h
+response.o: typedefs.h
+response.o: user.h
+gruftiaux.o: command.h
+gruftiaux.o: config.h
+gruftiaux.o: dcc.h
+gruftiaux.o: grufti.h
+gruftiaux.o: gruftiaux.h
+gruftiaux.o: log.h
+gruftiaux.o: misc.h
+gruftiaux.o: server.h
+gruftiaux.o: typedefs.h
+gruftiaux.o: user.h
+dcc.o: command.h
+dcc.o: config.h
+dcc.o: dcc.h
+dcc.o: grufti.h
+dcc.o: gruftiaux.h
+dcc.o: location.h
+dcc.o: log.h
+dcc.o: misc.h
+dcc.o: net.h
+dcc.o: note.h
+dcc.o: server.h
+dcc.o: typedefs.h
+dcc.o: user.h
+cmd1.o: banlist.h
+cmd1.o: channel.h
+cmd1.o: cmd.h
+cmd1.o: codes.h
+cmd1.o: command.h
+cmd1.o: config.h
+cmd1.o: dcc.h
+cmd1.o: fhelp.h
+cmd1.o: grufti.h
+cmd1.o: gruftiaux.h
+cmd1.o: location.h
+cmd1.o: log.h
+cmd1.o: misc.h
+cmd1.o: note.h
+cmd1.o: notify.h
+cmd1.o: response.h
+cmd1.o: server.h
+cmd1.o: typedefs.h
+cmd1.o: url.h
+cmd1.o: user.h
+cmd2.o: banlist.h
+cmd2.o: channel.h
+cmd2.o: cmd.h
+cmd2.o: codes.h
+cmd2.o: command.h
+cmd2.o: config.h
+cmd2.o: dcc.h
+cmd2.o: fhelp.h
+cmd2.o: grufti.h
+cmd2.o: gruftiaux.h
+cmd2.o: location.h
+cmd2.o: log.h
+cmd2.o: misc.h
+cmd2.o: note.h
+cmd2.o: notify.h
+cmd2.o: response.h
+cmd2.o: server.h
+cmd2.o: typedefs.h
+cmd2.o: url.h
+cmd2.o: user.h
+command.o: cmd.h
+command.o: command.h
+command.o: config.h
+command.o: dcc.h
+command.o: grufti.h
+command.o: gruftiaux.h
+command.o: log.h
+command.o: misc.h
+command.o: server.h
+command.o: typedefs.h
+command.o: user.h
+grufti.o: channel.h
+grufti.o: config.h
+grufti.o: fhelp.h
+grufti.o: grufti.h
+grufti.o: gruftiaux.h
+grufti.o: log.h
+grufti.o: misc.h
+grufti.o: response.h
+grufti.o: server.h
+grufti.o: typedefs.h
+got.o: banlist.h
+got.o: channel.h
+got.o: codes.h
+got.o: command.h
+got.o: config.h
+got.o: dcc.h
+got.o: got.h
+got.o: grufti.h
+got.o: gruftiaux.h
+got.o: log.h
+got.o: misc.h
+got.o: mode.h
+got.o: notify.h
+got.o: response.h
+got.o: server.h
+got.o: typedefs.h
+got.o: url.h
+got.o: user.h
+user.o: channel.h
+user.o: config.h
+user.o: dcc.h
+user.o: grufti.h
+user.o: gruftiaux.h
+user.o: log.h
+user.o: misc.h
+user.o: note.h
+user.o: notify.h
+user.o: response.h
+user.o: server.h
+user.o: typedefs.h
+user.o: user.h
+misc.o: config.h
+misc.o: grufti.h
+misc.o: misc.h
+misc.o: typedefs.h
+server.o: channel.h
+server.o: codes.h
+server.o: config.h
+server.o: got.h
+server.o: grufti.h
+server.o: gruftiaux.h
+server.o: log.h
+server.o: misc.h
+server.o: notify.h
+server.o: server.h
+server.o: typedefs.h
+main.o: banlist.h
+main.o: channel.h
+main.o: codes.h
+main.o: command.h
+main.o: config.h
+main.o: dcc.h
+main.o: event.h
+main.o: grufti.h
+main.o: location.h
+main.o: log.h
+main.o: misc.h
+main.o: net.h
+main.o: note.h
+main.o: notify.h
+main.o: response.h
+main.o: server.h
+main.o: sigcatch.h
+main.o: typedefs.h
+main.o: url.h
+main.o: user.h
+url.o: config.h
+url.o: grufti.h
+url.o: gruftiaux.h
+url.o: log.h
+url.o: misc.h
+url.o: typedefs.h
+url.o: url.h
+sigcatch.o: banlist.h
+sigcatch.o: channel.h
+sigcatch.o: config.h
+sigcatch.o: dcc.h
+sigcatch.o: grufti.h
+sigcatch.o: location.h
+sigcatch.o: log.h
+sigcatch.o: misc.h
+sigcatch.o: response.h
+sigcatch.o: server.h
+sigcatch.o: sigcatch.h
+sigcatch.o: typedefs.h
+sigcatch.o: url.h
+sigcatch.o: user.h
+net.o: config.h
+net.o: net.h
+net.o: sigcatch.h
+channel.o: channel.h
+channel.o: config.h
+channel.o: grufti.h
+channel.o: gruftiaux.h
+channel.o: log.h
+channel.o: misc.h
+channel.o: server.h
+channel.o: typedefs.h
+channel.o: user.h
+log.o: config.h
+log.o: dcc.h
+log.o: grufti.h
+log.o: gruftiaux.h
+log.o: log.h
+log.o: misc.h
+log.o: typedefs.h
+blowfish.o: blowfish.h
+blowfish.o: config.h
+blowfish.o: grufti.h
+blowfish.o: gruftiaux.h
+blowfish.o: log.h
+blowfish.o: typedefs.h
+fhelp.o: config.h
+fhelp.o: grufti.h
+fhelp.o: gruftiaux.h
+fhelp.o: log.h
+fhelp.o: misc.h
+fhelp.o: typedefs.h

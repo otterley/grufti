@@ -1,0 +1,76 @@
+#############################################################################
+# Steve Rider - stever@area23.org
+# Grufti - an interactive, service-oriented bot for IRC
+#
+# Makefile
+#
+#############################################################################
+
+# CGI executable name (You may want to eventually change the path to your
+# CGI directory so that you don't have to copy it over every time you compile)
+CGI = ../gb.cgi
+
+CC = gcc
+CFLAGS = -O3 -fno-strength-reduce @CFLAGS@
+CLINKFLAGS = @STRIP@ @LIBS@
+
+# CGIC library stuff
+LIBS = -L./ -lcgic
+RANLIB = @RANLIB@
+AR = ar
+XREQ = libcgic.a
+DEBUG = -g
+DEFINES =
+
+
+# No need to change anything below this line
+##############################################################################
+OBJECTS = webclient.o cgic.o blowfish.o misc.o net.o main.o
+SOURCES = webclient.c cgic.c blowfish.c misc.c net.c main.c
+
+cgi: ${OBJECTS}
+	${CC} ${CLINKFLAGS} -o ${CGI} ${OBJECTS}
+	@chmod 755 ${CGI}
+	@echo ""
+	@echo "Successfile compile: ${CGI}"
+	@echo "Type 'make install-cgi' to install the CGI executable."
+
+.c.o: ; ${CC} ${CFLAGS} ${DEFINES} -c $<
+
+libcgic.a: cgic.o cgic.h
+	@rm -f libcgic.a
+	${AR} rc libcgic.a cgic.o
+	${RANLIB} libcgic.a
+
+install-cgi:
+	@cd ..; sh ./install-cgi
+
+clean:
+	@echo "Removing object files..."
+	@rm -f core *.o *.a ${CGI}
+
+depend:
+	@echo "Updating dependencies..."
+	@makedepend ${SOURCES}
+
+# Our dependencies
+# DO NOT DELETE THIS LINE -- make depend depends on it.
+webclient.o: ../src/config.h
+webclient.o: ../webconfig.h
+webclient.o: cgic.h
+webclient.o: misc.h
+webclient.o: net.h
+webclient.o: webclient.h
+cgic.o: cgic.h
+blowfish.o: ../src/config.h
+blowfish.o: blowfish.h
+blowfish.o: misc.h
+misc.o: ../src/config.h
+misc.o: misc.h
+net.o: ../src/config.h
+net.o: net.h
+main.o: ../src/config.h
+main.o: cgic.h
+main.o: misc.h
+main.o: net.h
+main.o: webclient.h

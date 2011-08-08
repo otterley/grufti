@@ -1,0 +1,12 @@
+Hello!  Welcome to Grufti!
+
+Since you are a new user to me, type 'register' to set yourself
+up with an account.  By registering with the bot, you will secure
+this nick as yours and you will own a space where you can set
+information about yourself.
+
+If you are already registered and are using a nick which is not
+listed for your account, type 'addthisnick <acctname> <password>'
+to add it.
+
+Type 'register' to begin...

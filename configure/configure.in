@@ -1,0 +1,115 @@
+dnl Process this file with autoconf to produce a configure script.
+AC_INIT(../src/config.h.in)
+AC_CONFIG_HEADER(../src/config.h)
+
+echo ""
+echo "========================================================================"
+echo "Grufti 1.0.17 (c) 2000 Steve Rider - stever@area23.org"
+echo ""
+echo "Welcome to Grufti configure."
+echo ""
+echo "This script automatically generates a Makefile and a config.h specific"
+echo "to your machine and operating system.  Please sit tight while it runs"
+echo "a series of tests.  We'll get to the actual compiling in a moment..."
+echo ""
+
+dnl Checks for programs.
+AC_PROG_CC
+AC_AIX
+AC_ISC_POSIX
+AC_MINIX
+
+if test ! x${cross_compiling} = xno; then
+	echo ""
+	echo "ERROR: This system does not appear to have a working C compiler."
+	echo "ERROR: You will not be able to compile Grufti.  Have a nice day :>"
+	echo ""
+	exit
+fi
+
+dnl Continuing checking for programs.
+AC_PROG_MAKE_SET
+AC_CHECK_PROG(STRIP,strip,-s)
+AC_CHECK_PROG(UNAME,uname,uname)
+AC_PROG_RANLIB
+
+dnl Check for compiler type
+if test "x$CC" = "xgcc"; then
+	CFLAGS="-Wall -Wno-implicit"
+	CC="gcc"
+else
+	cc="cc"
+fi
+
+dnl Check for IRIX
+AC_SUBST(OPT_LEVEL)
+AC_MSG_CHECKING(for IRIX)
+if test x`${UNAME}` = "xIRIX"; then
+	AC_MSG_RESULT(you are cursed with IRIX)
+	IRIX=yes
+	OPT_LEVEL="-O2"
+	STRIP=
+else
+	AC_MSG_RESULT(no)
+	IRIX=no
+	OPT_LEVEL="-O3"
+fi
+
+AC_CHECK_SIZEOF(long)
+AC_CHECK_SIZEOF(int)
+AC_C_BIGENDIAN
+
+dnl Checks for libraries.
+dnl Replace `main' with a function in -lm:
+AC_CHECK_LIB(m,main)
+
+dnl Check for Sun libraries.
+if test ${IRIX} = yes; then
+	echo Skipping library tests because they confuse Irix.
+else
+	AC_CHECK_LIB(socket,socket)
+	AC_CHECK_LIB(nsl,connect)
+	AC_CHECK_LIB(dns,gethostbyname)
+	if test x`${UNAME}` = "xSunOS"; then
+		AC_MSG_CHECKING(for SunOS 4)
+		if test x`uname -r |cut -d . -f 1` = "x5"; then
+			AC_MSG_RESULT(Solaris -- yay!)
+		else
+			AC_MSG_RESULT(SunOS -- sigh)
+			dnl for suns without yp or something like that:
+			AC_CHECK_LIB(dl,main)
+		fi
+	fi
+fi
+			
+dnl Checks for header files.
+AC_HEADER_DIRENT
+AC_HEADER_SYS_WAIT
+AC_HEADER_STDC
+AC_CHECK_HEADERS(fcntl.h sys/time.h unistd.h sys/select.h sys/rusage.h stdarg.h)
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_TYPE_PID_T
+AC_C_CONST
+AC_HEADER_TIME
+AC_STRUCT_TM
+
+dnl Checks for library functions.
+AC_CHECK_FUNCS(rename getrusage getdtablesize srandom random sigaction)
+AC_CHECK_FUNCS(sigemptyset vsprintf strcasecmp setpgid clock)
+AC_CHECK_FUNCS(gethostname select socket)
+
+if test "${ac_cv_func_vsprintf}" = "no"; then
+	echo ""
+	echo "Your system does not have the sprintf/vsprintf libraries,"
+	echo "which are required to compile nearly everything.  Sorry."
+	echo ""
+	exit
+fi
+
+AC_OUTPUT(../src/Makefile ../src-cgi/Makefile)
+
+echo ""
+echo "Configuration complete."
+echo "========================================================================"
+echo ""

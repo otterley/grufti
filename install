@@ -1,0 +1,212 @@
+#!/bin/sh
+#############################################################################
+# Steve Rider - stever@area23.org
+# Grufti - an interactive, service-oriented bot for IRC
+#
+# installation script - creates a new bot directory with correct tree
+#                       structure.  Borrowed from eggdrop.  Revised heavily
+#                       by Klaus (thanks!)
+#
+#############################################################################
+
+# Direct-deposit?
+direct=0
+if [ $# -gt 0 ]; then
+	if [ $1 = "1" ]; then
+		direct=1
+	fi
+fi
+
+# One lone define.
+NOGO="You don't have permission to create a directory there!"
+
+# Whee. This is where the fun stuff happens.
+
+echo ""
+echo "========================================================================"
+if [ ! -r grufti ]; then
+	cat <<UNMADE
+
+You must first configure and compile the bot before you can
+install it.  Type 'make' to proceed.
+
+UNMADE
+	exit 1
+fi
+
+
+./grufti -v
+cat <<WELCOME
+
+Welcome to the Grufti installation script.
+
+This script will install Grufti and all its components into the
+install directory, or will upgrade a previous version if the install
+directory contains a previous version.  If you are upgrading from
+a previous version, your bot files will remain intact, and any files
+that are replaced will be renamed with .old as the extension.
+
+Directory to install Grufti [~/grufti] 
+WELCOME
+
+read dir
+echo ""
+
+if [ $dir"x" = "x" ] ; then
+	dir="${HOME}/grufti"
+elif [ `echo $dir | grep -c '~'` -eq 1 ] ; then
+	dir=`echo $dir | sed -e 's/\~//;'`
+	dir=${HOME}${dir}
+else
+	dir=$dir
+fi
+
+if [ $dir = `pwd` ]; then
+	echo $NOGO
+	exit 1
+fi
+
+echo "Installing to: $dir"
+if [ ! -d $dir ]; then
+	mkdir $dir
+fi
+
+if [ ! -d $dir ]; then
+	echo ""
+	echo "The directory \"$dir\" is invalid."
+	echo ""
+	exit 1
+fi
+
+if [ ! -r $dir -o ! -w $dir -o ! $dir ]; then
+	echo $NOGO
+	exit 1
+fi
+
+if [ ! -r README ]; then
+	echo ""
+	echo "You must run the install script from the Grufti directory!"
+	echo ""
+	exit 1
+fi
+
+echo ""
+echo "Creating Grufti directory structure..."
+if [ ! -r $dir/bot ]; then
+	mkdir $dir/bot
+fi
+
+if [ ! -r $dir/etc ]; then
+	mkdir $dir/etc
+fi
+
+if [ ! -r $dir/files ]; then
+	mkdir $dir/files
+fi
+
+if [ ! -r $dir/incoming ]; then
+	mkdir $dir/incoming
+fi
+
+if [ ! -r $dir/backup ]; then
+	mkdir $dir/backup
+fi
+
+if [ ! -r $dir/logs ]; then
+	mkdir $dir/logs
+fi
+
+echo "Copying grufti files..."
+if [ -r $dir/grufti.pid ]; then
+	echo "It looks like your bot is already running!  Kill it and install again."
+	exit 1
+fi
+
+if [ -f $dir/grufti ]; then
+	if [ $direct -ne "1" ]; then
+		mv -f $dir/grufti $dir/grufti.old
+		echo "Moving existing grufti to grufti.old..."
+	fi
+fi
+
+# Check config file version
+if [ -r $dir/config.gb ]; then
+	VER=`grufti -v |tail -1 |awk '{print $1}'`
+	CONFIG_VER=`cat $dir/config.gb |head -1 |awk '{print $2}'`
+	if [ ! $VER"x" = $CONFIG_VER"x" ]; then
+		if [ $CONFIG_VER"x" = "x" ]; then
+			CONFIG_VER="old"
+		fi
+		echo "Existing config.gb is from an older version. ($CONFIG_VER)"
+		echo "Moving existing config.gb to config.gb.$CONFIG_VER..."
+		mv -f $dir/config.gb $dir/config.gb.$CONFIG_VER
+	fi
+fi
+
+if [ -r $dir/etc/help ]; then
+	if [ $direct -ne "1" ]; then
+		mv -f $dir/etc/help $dir/etc/help.old
+		echo "Moving existing etc/help to etc/help.old..."
+	fi
+fi
+
+if [ -r $dir/files/gb_cmd.zip ]; then
+	if [ $direct -ne "1" ]; then
+		mv -f $dir/files/gb_cmd.zip $dir/files/gb_cmd.zip.old
+		echo "Moving existing files/gb_cmd.zip to files/gb_cmd.zip.old..."
+	fi
+fi
+
+cp -f grufti $dir
+
+if [ $direct -ne "1" ]; then
+	if [ ! -r $dir/config.gb ]; then
+		cp -f skel/config.gb $dir
+	fi
+	cp -f skel/help $dir/etc
+	cp -f skel/gb_cmd.zip $dir/files
+	cp -f README $dir
+	cp -f CHANGES $dir
+
+	if [ ! -d $dir/bot ]; then
+		echo "$dir/bot is not a directory!  Skipping..."
+	else
+		if [ ! -r $dir/bot/response ]; then
+			cp skel/response $dir/bot
+		fi
+	
+		if [ ! -r $dir/bot/combos ]; then
+			cp skel/combos $dir/bot
+		fi
+	fi
+	
+	if [ ! -d $dir/etc ]; then
+		echo "$dir/etc is not a directory!  Skipping..."
+	else
+		if [ ! -r $dir/etc/banner ]; then
+			cp skel/banner $dir/etc
+		fi
+	
+		if [ ! -r $dir/etc/motd ]; then
+			cp skel/motd $dir/etc
+		fi
+
+		if [ ! -r $dir/etc/welcome ]; then
+			cp skel/welcome $dir/etc
+		fi
+	fi
+fi
+
+cat <<EOF
+Done.
+
+If you haven't read the README file, READ IT NOW!!!
+
+You can type 'make clean' to save some disk space now that your bot
+is built and compiled.
+
+Installation is complete, have fun!
+========================================================================
+
+EOF
+
